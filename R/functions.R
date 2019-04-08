@@ -84,7 +84,6 @@ readLevel2<-function(level2path, spdf=TRUE, glatlon=TRUE) {
 }
 
 
-
 #'Display LVIS Waveform
 #'
 #'@description This function plots LVIS level1b and level 2 data
