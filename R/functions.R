@@ -45,7 +45,7 @@ readLevel1b<-function(level1bpath) {
 #'# LVIS level2 file path
 #'level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
 #'unzip(level2_filepath_zip, exdir = tempdir())
-#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level1b.txt")
+#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
 #'
 #'# Reading LVIS level1b file
 #'level2_spdf<-readLevel2(level2path=level2_filepath, spdf=TRUE, glatlon=TRUE)
@@ -111,7 +111,7 @@ readLevel2<-function(level2path, spdf=TRUE, glatlon=TRUE) {
 #'# LVIS level2 file path
 #'level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
 #'unzip(level2_filepath_zip, exdir = tempdir())
-#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level1b.txt")
+#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
 #'
 #'# Reading LVIS level1b file
 #'level2_spdf<-readLevel2(level2path=level2_filepath, spdf=TRUE, glatlon=TRUE)
@@ -244,7 +244,7 @@ plotWaveform<-function(level1b,level2,shotnum=10964985,plot2=TRUE,...) {
 #'# LVIS level2 file path
 #'level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
 #'unzip(level2_filepath_zip, exdir = tempdir())
-#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level1b.txt")
+#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
 #'
 #'# Reading LVIS level1b file
 #'level2_spdf<-readLevel2(level2path=level2_filepath, spdf=TRUE, glatlon=TRUE)
@@ -282,7 +282,7 @@ plotLevel2 = function(level2_spdf, color = "RH100", colorPalette = c("blue","gre
 #'#' LVIS level 2 file path
 #'level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
 #'unzip(level2_filepath_zip, exdir = tempdir())
-#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level1b.txt")
+#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
 #'
 #'#' Polygons file path
 #'polygons_filepath <- system.file("extdata", "LVIS_Mondah_polygons.shp", package="rLVIS")
@@ -367,7 +367,7 @@ L2Stats = function(level2_spdf, func=~mySetOfMetrics(RH100), id = NULL)
 #'#' LVIS level 2 file path
 #'level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
 #'unzip(level2_filepath_zip, exdir = tempdir())
-#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level1b.txt")
+#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
 #'
 #'#' Reading LVIS level 2 file
 #'level2_spdf<-readLevel2(level2path=level2_filepath,spdf=TRUE,glatlon=TRUE)
@@ -430,7 +430,7 @@ GridMetrics = function(level2_spdf, func=~max(RH100), res = 0.0005)
 #'#' LVIS level 2 file path
 #'level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
 #'unzip(level2_filepath_zip, exdir = tempdir())
-#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level1b.txt")
+#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
 #'
 #'#' Polgons file path
 #'polygons_filepath <- system.file("extdata", "LVIS_Mondah_polygons.shp", package="rLVIS")
