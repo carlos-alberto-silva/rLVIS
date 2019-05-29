@@ -136,7 +136,7 @@ head(RH100metrics)
 
 ```r
 #' Computing serie of LVIS metrics
-mlvis<-GridMetrics(level2_spdf=level2_spdf,func=~mySetOfMetrics(ZT), res=0.0005)
+mlvis<-GridMetrics(level2_spdf=level2_spdf,func=~mySetOfMetrics(RH100), res=0.0005)
 plot(mlvis)
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_4.png)
