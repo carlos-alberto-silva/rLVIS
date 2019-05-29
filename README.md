@@ -160,7 +160,7 @@ plot(ZGmean, xlab="UTM Easting", ylab="UTM Nothing")
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_6.png)
 
-``r
+```r
 plot3D(ZGmean, col="gray", add=T)
 aspect3d(1,1,0.1)
 ```
