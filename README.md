@@ -118,21 +118,20 @@ mySetOfMetrics = function(x)
 #'Computing single LVIS metrics
 RH100mean<-L2Stats(level2_spdf=level2_spdf,func=~mean(RH100), id=NULL)
 head(RH100mean)                      
-```
     ##    mean
     ## 34.5598
-
+```
 ```r
 #'Computing LVIS metrics by id
 RH100metrics<-L2Stats(level2_spdf=level2_spdf_sub,func=~mySetOfMetrics(RH100),
                       id=level2_spdf_sub@data$CLIPID)
 head(RH100metrics)                      
-```
+
     ##   id  min   max   mean        sd
     ##   1 2.06 65.40 32.48820  9.996999
     ##   3 2.47 57.26 37.95028 12.054305
     ##   2 6.92 59.78 37.23889  5.176369
-
+```
 #' Canopy and ground metrics within as raster layers
 
 ```r
@@ -161,7 +160,7 @@ plot(ZGmean, xlab="UTM Easting", ylab="UTM Nothing")
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_6.png)
 
-``r`
+``r
 plot3D(ZGmean, col="gray", add=T)
 aspect3d(1,1,0.1)
 ```
