@@ -155,7 +155,7 @@ plot(maxRH100, xlab="UTM Easting", ylab="UTM Nothing")
 ```
 plot3D(maxRH100, col="forestgreen")
 ```
-![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_7.png)
+![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_7.PNG)
 
 ```
 #' Computing single LVIS metrics
@@ -168,4 +168,4 @@ plot(ZGmean, xlab="UTM Easting", ylab="UTM Nothing")
 plot3D(ZGmean, col="gray", add=T)
 aspect3d(1,1,0.1)
 ```
-![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_8.png)
+![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_8.PNG)
