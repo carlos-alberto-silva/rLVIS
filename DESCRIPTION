@@ -4,8 +4,10 @@ Title: Land, Vegetation, and Ice Sensor (LVIS)
 Version: 0.0.1
 Author: Carlos A. Silva
 Maintainer: Carlos A. Silva <carlos_engflorestal@outlook.com>
-Depends: R (>= 3.5.3)
+Depends: R (>= 3.5.0)
 Imports: h5,sp,raster,rgdal,data.table,lazyeval
-Description: Set of tools for reading, processing and visualizing LVIS Level1b and Level2 data
+Description: Set of tools for reading, processing and visualizing 
+            LVIS (Land, Vegetation, and Ice Sensor) Level1b and Level2 data
+            for forest inventory applications.
 License: GPL (>= 2)
 RoxygenNote: 6.1.1
