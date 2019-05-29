@@ -27,19 +27,17 @@ install.packages("rLVIS")
 ```    
 
 ## Getting Started
-
-```    
+```r   
 # Import labraries
 library(rLIVS)
 library(raster)
 library(rgdal)
 library(rasterVis)
 library(rgl)
-
 ```
 
 # Import LVIS data
-```
+```r
 # LVIS level1b file path
 level1b_filepath_zip <- system.file("extdata", "LVIS_Mondah_level1b.zip", package="rLVIS")
 unzip(level1b_filepath_zip, exdir = tempdir())
@@ -64,8 +62,7 @@ proj4string(plots) <- CRS("+proj=longlat +datum=WGS84")
 ```
 
 #' Plot LVIS Level2 data
-
-```
+```r
 par(mfrow=c(1,2))
 plotLevel2(level2_spdf=level2_spdf, color = "RH100",
            colorPalette = c("blue","green","yellow","red"),axes=TRUE,
@@ -80,7 +77,7 @@ plotLevel2(level2_spdf=level2_spdf, color = "RH100",
 
 
 #'Clipping LVIS Level2 data
-```
+```r
 level2_spdf_sub<-clipLevel2(level2_spdf=level2_spdf,polygon_spdf=plots)
 
 #' Plot clipped LVIS Level2 data
@@ -97,7 +94,7 @@ grid()
 
 
 #'Plotting LVIS waveforms
-```
+```r
 plotWaveform(level1b=level1b,level2=level2_spdf,
              shotnum=10964985,plot2=TRUE,xlab="Relative amplitude (%)", ylab="Height (m)")
 ```
@@ -105,7 +102,7 @@ plotWaveform(level1b=level1b,level2=level2_spdf,
 
 
 #' Canopy and ground metrics within field plots
-```
+```r
 #' Define your own function
 mySetOfMetrics = function(x)
 {
@@ -125,7 +122,7 @@ head(RH100mean)
 ##    mean
 ## 34.5598
 
-```
+```r
 #'Computing LVIS metrics by id
 RH100metrics<-L2Stats(level2_spdf=level2_spdf_sub,func=~mySetOfMetrics(RH100),
                       id=level2_spdf_sub@data$CLIPID)
@@ -138,33 +135,33 @@ head(RH100metrics)
 
 #' Canopy and ground metrics within as raster layers
 
-```
+```r
 #' Computing serie of LVIS metrics
 mlvis<-GridMetrics(level2_spdf=level2_spdf,func=~mySetOfMetrics(ZT), res=0.0005)
 plot(mlvis)
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_4.png)
 
-```
+```r
 #' Computing single LVIS metrics
 maxRH100<-GridMetrics(level2_spdf=level2_spdf,func=~max(RH100), res=0.0005)
 plot(maxRH100, xlab="UTM Easting", ylab="UTM Nothing")
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_5.png)
 
-```
+```r
 plot3D(maxRH100, col="forestgreen")
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_7.PNG)
 
-```
+```r
 #' Computing single LVIS metrics
 ZGmean<-GridMetrics(level2_spdf=level2_spdf,func=~mean(ZG), res=0.0005)
 plot(ZGmean, xlab="UTM Easting", ylab="UTM Nothing")
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_6.png)
 
-```
+``r`
 plot3D(ZGmean, col="gray", add=T)
 aspect3d(1,1,0.1)
 ```
