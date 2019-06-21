@@ -2,32 +2,32 @@
 #'
 #'@description Compute and plot stastical parameters of 1:1 comparison
 #'
-#'@usage plotStats(x,y,n,colours,colfill,fit.line.col,legend.position,legend.size,stats.position,stat.size,base_size,
-#'                xlim,ylim,ylab,xlab,x_axis,y_axis,title)
+#'@aliases plotStats
 #'
 #'@param x h5file; S4 object of class H5File
 #'@param y dataframe containing LVIS level 2 data
-#'@param n
 #'@param colours h5file; S4 object of class H5File
-#'@param colfill dataframe containing LVIS level 2 data
-#'@param fit.line.col dataframe containing LVIS level 2 data
-#'@param legend.position dataframe containing LVIS level 2 data
-#'@param stats.position dataframe containing LVIS level 2 data
-#'@param legend.size dataframe containing LVIS level 2 data
-#'@param stat.size dataframe containing LVIS level 2 data
-#'@param base_size dataframe containing LVIS level 2 data
+#'@param n size
 #'@param xlim dataframe containing LVIS level 2 data
 #'@param ylim h5file; S4 object of class H5File
+#'@param colfill dataframe containing LVIS level 2 data
 #'@param xlab h5file; S4 object of class H5File
 #'@param ylab dataframe containing LVIS level 2 data
+#'@param title h5file; S4 object of class H5File
+#'@param legend.position dataframe containing LVIS level 2 data
+#'@param stats.position dataframe containing LVIS level 2 data
+#'@param base_size dataframe containing LVIS level 2 data
+#'@param stat.size dataframe containing LVIS level 2 data
+#'@param legend.size dataframe containing LVIS level 2 data
+#'@param fit.line.col dataframe containing LVIS level 2 data
 #'@param x_axis dataframe containing LVIS level 2 data
 #'@param y_axis dataframe containing LVIS level 2 data
-#'@param tittle h5file; S4 object of class H5File
-
-#'@return Returns A list containing statistical parameters and the Scatterplot of the 1:1 comparison
-#'@author Carlos Alberto Silva.
-#'@examples
 #'
+#'@return Returns A list containing statistical parameters and the Scatterplot of the 1:1 comparison
+#'
+#'@author Carlos Alberto Silva.
+#'
+#'@examples
 #'# Importing libraries
 #'library(raster)
 #'library(rasterVis)
@@ -79,31 +79,36 @@
 #'x_axis=TRUE
 #'y_axis=TRUE
 #'
-#'x11()
-#'agb.comp<-plotStats(y=getValues(r1),
-#'                   x=getValues(r2),
-#'                   colours=colours,
-#'                   legend.position= legend.position,
-#'                   stat.size=stat.size,
-#'                   stats.position=stats.position,
-#'                   base_size=base_size,
-#'                   xlim=xlim,
-#'                   legend.size=legend.size,
-#'                   ylim=ylim,
-#'                   ylab=ylab,
-#'                   xlab=xlab,
-#'                   fit.line.col=fit.line.col,
-#'                   title=title,
-#'                   x_axis=x_axis,
-#'                   y_axis=y_axis)
+#'\dontrun{
+#' x11()
+#'}
+#'agb.comp<-plotStats(y=getValues(lf_agb),
+#'                  x=getValues(sf_agb),
+#'                  colours=colours,
+#'                  legend.position= legend.position,
+#'                  stat.size=stat.size,
+#'                  stats.position=stats.position,
+#'                  base_size=base_size,
+#'                  xlim=xlim,
+#'                  legend.size=legend.size,
+#'                  ylim=ylim,
+#'                  ylab=ylab,
+#'                  xlab=xlab,
+#'                  fit.line.col=fit.line.col,
+#'                  title=title,
+#'                  x_axis=x_axis,
+#'                  y_axis=y_axis)
 #'
 #'# Combining plots
 #'grid.arrange(agb.maps,agb.comp$plotg, nrow = 1)
 #'
 #'@import ggplot2
+#'@importFrom stats na.omit lm pf cor
 #'@export
 plotStats<-function(x,y,n,colours=c("blue","green","yellow","red"),xlim=NULL,ylim=NULL,colfill="gray",xlab=NULL,ylab=NULL,title="GEDI vs ALS",legend.position = c(0.8, 0.2),stats.position=c(50,400,5),
                     base_size = 16,stat.size=3.5, legend.size=c(8,8,3,1),fit.line.col=c("black","red"),x_axis=TRUE, y_axis=TRUE){
+
+  density = NA
 
   xy<-na.omit(cbind(x,y))
   x<-xy[,1]

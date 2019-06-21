@@ -4,7 +4,7 @@
 \alias{GridMetrics}
 \title{Compute a Series of Grid Metrics}
 \usage{
-GridMetrics(level2_spdf, func, res)
+GridMetrics(level2_spdf, func, res = 5e-04)
 }
 \arguments{
 \item{level2_spdf}{LVIS l2 dataset; object of class \code{SpatialPointsDataFrame}}
@@ -42,14 +42,14 @@ metrics = list(
  return(metrics)
 }
 
-#' Computing serie of LVIS metrics
-mlvis<-GridMetrics(level2_spdf=level2_spdf,mySetOfMetrics(ZT), res=0.0005)
+#' Computing a serie of LVIS metrics
+mlvis<-GridMetrics(level2_spdf=level2_spdf,func=mySetOfMetrics(ZT), res=0.0005)
 
-#' Computing single LVIS metrics
-maxRH100<-GridMetrics(level2_spdf=level2_spdf,max(RH100), res=0.0005)
+#' Computing the maximum of RH100 only
+maxRH100<-GridMetrics(level2_spdf=level2_spdf,func=max(RH100), res=0.0005)
 
-#' Computing single LVIS metrics
-ZGmean<-GridMetrics(level2_spdf=level2_spdf,mean(ZG), res=0.0005)
+#' Computing the mean of ZG only
+ZGmean<-GridMetrics(level2_spdf=level2_spdf,func=mean(ZG), res=0.0005)
 rasterVis::plot3D(ZGmean, col="gray")
 }
 }

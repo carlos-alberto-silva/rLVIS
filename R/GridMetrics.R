@@ -3,8 +3,6 @@
 #'@description This function computes a series of user-defined descriptive statistics for a LVIS dataset within
 #'each grid cell
 #'
-#'@usage GridMetrics(level2_spdf, func, res)
-#'
 #'@param level2_spdf LVIS l2 dataset; object of class \code{SpatialPointsDataFrame}
 #'@param func the function to be applied to each cell
 #'@param res spatial resolution for the output raster layer
@@ -51,6 +49,9 @@ GridMetrics = function(level2_spdf, func, res = 0.0005)
 
   is_formula <- tryCatch(lazyeval::is_formula(func), error = function(e) FALSE)
   if (!is_formula) func <- lazyeval::f_capture(func)
+
+  # Add data.table operator
+  `:=` <- data.table::`:=`
 
   #func <- lazyeval::f_capture(func)
   level2_dt<-data.table::data.table(level2_spdf@data)
