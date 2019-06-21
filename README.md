@@ -165,3 +165,80 @@ plot3D(ZGmean, col="gray", add=T)
 aspect3d(1,1,0.1)
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_8.PNG)
+
+
+#' Scatterplot of a 1:1 comparison
+
+```r
+#Importing libraries
+library(raster)
+library(rasterVis)
+library(viridis)
+library(gridExtra)
+
+# Importing dataset
+sf_agb1ha_path <- system.file("extdata", "sf_agb_1ha.tif", package="rLVIS")
+lf_agb1ha_path <- system.file("extdata", "lf_agb_1ha.tif", package="rLVIS")
+
+sf_agb<-raster(sf_agb1ha_path)
+lf_agb<-raster(lf_agb1ha_path)
+
+# Ploting AGB maps
+s <- stack(sf_agb,lf_agb)
+agb.maps<-levelplot(s,
+          layout=c(1, 2),
+          margin=FALSE,
+          colorkey=list(
+            space='right',
+            labels=list(at=seq(0, 500, 50), font=4),
+            axis.line=list(col='black'),
+            width=1),
+          par.settings=list(
+            strip.border=list(col='transparent'),
+            strip.background=list(col='transparent'),
+            axis.line=list(col='transparent')
+          ),
+          scales=list(draw=TRUE),
+          col.regions=viridis,
+          at=seq(0, 500, len=101),
+          names.attr=c("SF_AGB","LF_AGB"))
+
+# Ploting Stats
+colours<-viridis(10)
+base_size=15
+legend.position= c(0.85, 0.3)
+stat.size=5
+stats.position=c(100,400,50)
+base_size=base_size
+xlim=c(0,500)
+legend.size=c(8,15,10,2)
+ylim=c(0,500)
+ylab="LF-derived AGB (Mg/ha)"
+xlab="SF-derived AGB (Mg/ha)"
+fit.line.col=c("black","gray")
+title="SF vs LF lidar"
+x_axis=TRUE
+y_axis=TRUE
+
+x11()
+agb.comp<-plotStats(y=getValues(r1),
+                   x=getValues(r2),
+                   colours=colours,
+                   legend.position= legend.position,
+                   stat.size=stat.size,
+                   stats.position=stats.position,
+                   base_size=base_size,
+                   xlim=xlim,
+                   legend.size=legend.size,
+                   ylim=ylim,
+                   ylab=ylab,
+                   xlab=xlab,
+                   fit.line.col=fit.line.col,
+                   title=title,
+                   x_axis=x_axis,
+                   y_axis=y_axis)
+
+# Combining plots
+grid.arrange(agb.maps,agb.comp$plotg, nrow = 1)
+```
+![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_9.PNG)
