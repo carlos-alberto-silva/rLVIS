@@ -241,4 +241,4 @@ agb.comp<-plotStats(y=getValues(r1),
 # Combining plots
 grid.arrange(agb.maps,agb.comp$plotg, nrow = 1)
 ```
-![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_9.PNG)
+![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_9.png)
