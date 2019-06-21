@@ -28,7 +28,7 @@
 #'@author Carlos Alberto Silva.
 #'@examples
 #'
-#'Importing libraries
+#'# Importing libraries
 #'library(raster)
 #'library(rasterVis)
 #'library(viridis)
@@ -41,7 +41,7 @@
 #'sf_agb<-raster(sf_agb1ha_path)
 #'lf_agb<-raster(lf_agb1ha_path)
 #'
-#'Ploting AGB maps
+#'# Ploting AGB maps
 #'s <- stack(sf_agb,lf_agb)
 #'agb.maps<-levelplot(s,
 #'          layout=c(1, 2),
