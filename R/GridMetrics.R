@@ -41,9 +41,11 @@
 #'rasterVis::plot3D(ZGmean, col="gray")
 #'}
 #'@importFrom utils read.table
+#'@import data.table
 #'@export
 GridMetrics = function(level2_spdf, func, res = 0.0005)
 {
+  requireNamespace("data.table")
   # this code has been adapted from the grid_metrics function in lidR package (Roussel et al. 2019)
   # https://github.com/Jean-Romain/lidR/blob/master/R/grid_metrics.r
 
@@ -54,12 +56,12 @@ GridMetrics = function(level2_spdf, func, res = 0.0005)
   `:=` <- data.table::`:=`
 
   #func <- lazyeval::f_capture(func)
-  level2_dt<-data.table::data.table(level2_spdf@data)
-  layout<-raster::raster(raster::extent(level2_spdf), res=res)
+  level2_dt <- data.table::data.table(level2_spdf@data)
+  layout    <- raster::raster(raster::extent(level2_spdf), res=res)
   func      <- lazyeval::f_interp(func)
   call      <- lazyeval::as_call(func)
   cells     <- raster::cellFromXY(layout, sp::coordinates(level2_spdf))
-  metrics   <- level2_dt[,c(eval(call)), by = cells]
+  metrics   <- level2_dt[,eval(call), by = cells]
   xy_coords <- raster::xyFromCell(layout, metrics[[1]])
   metrics[, cells := NULL]
   output <- sp::SpatialPixelsDataFrame(xy_coords, metrics, proj4string = level2_spdf@proj4string)
