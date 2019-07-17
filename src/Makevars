@@ -1,0 +1,54 @@
+# Makefile for GEDI simulator tools
+HANCOCKTOOLS_ROOT = tools
+LIBCLIDAR_ROOT = libclidar
+CMPFIT_ROOT = cmpfit
+GSL_ROOT = gsl
+HDF5_LIB = hdf5/src
+LIBS = -lm -lgdal -lgeotiff
+BIN=
+ARCH=$(shell uname -m)
+LINKER=
+COPY=cp
+THIS=gediRat
+OUTPUT=/usr/bin/$(THIS)
+
+ifeq ("$(OS)","Windows_NT")
+	LIBS = -lgdal_i -lgeotiff_i
+	PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DGSL_DLL
+	BIN=.exe
+	ARCH=$(PROCESSOR_ARCHITECTURE)
+	LINKER=$(where link)
+	COPY=copy /Y
+	OUTPUT = $(CONDA_PREFIX)\Library\bin\$(THIS)$(BIN)
+endif
+
+
+LIBS += -lgsl -lgslcblas -ltiff -L${GSL_ROOT}
+PKG_CFLAGS += -I/usr/local/include -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) -I${LIBCLIDAR_ROOT} -I${HDF5_LIB} -I. -I/usr/include/libgeotiff -I/usr/include/gdal
+#CFLAGS += -Wl,--verbose
+#CFLAGS += -g
+src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c $(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c $(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c  $(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c $(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c #$(GEDIRAT_ROOT)/photonCount.c
+src += $(CMPFIT_ROOT)/mpfit.c
+obj = $(src:.c=.o)
+EXE=$(THIS)$(BIN)
+
+# GSLFit=linear.o
+# MIN=mpfit
+# MPFIT=${CMPFIT_ROOT}/$(MIN)
+
+all: clean deps
+
+deps:
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/deps.R"
+
+
+$(EXE): $(THIS).o $(obj)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS) $(INCLS)
+
+clean:
+	rm -f *% *~ *.o
+
+install: $(THIS)$(BIN)
+	$(COPY) "$(THIS)$(BIN)" "$(OUTPUT)"
+
+.PHONY: clean install
