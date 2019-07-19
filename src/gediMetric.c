@@ -377,36 +377,28 @@ SEXP processFloWave2(SEXP input, SEXP output) {
     /*read waveform*/
     data = unpackHDFlvis(dimage->gediIO.inList[0],&dimage->hdfLvis,&dimage->gediIO,i);
     if(dimage->readL2)setL2ground(data,i,dimage);
-    Rprintf("unpacked successfuly!\n");
 
     /*check bounds if needed*/
     if(dimage->useBounds)checkWaveformBounds(data,dimage);
-    Rprintf("Checled waveform bounds!\n");
 
     /*is the data usable*/
     if(data->usable){
-      Rprintf("Data is usable!!!\n");
 
       /*denoise and change pulse if needed*/
       if(dimage->renoiseWave)modifyTruth(data,&dimage->noise);
-      Rprintf("Checled waveform bounds!\n");
 
       /*determine truths before noising*/
       determineTruth(data,dimage);
-      Rprintf("Truth determinated!\n");
 
       /*add noise if needed*/
       addNoise(data,&dimage->noise,dimage->gediIO.fSigma,dimage->gediIO.pSigma,dimage->gediIO.res,rhoC,rhoG);
-      Rprintf("Noise added!\n");
 
       /*process waveform*/
       /*denoise*/
       denoised=processFloWave(data->noised,data->nBins,dimage->gediIO.den,1.0);
-      Rprintf("Denoised!\n");
 
       /*are we in GEDI mode?*/
       if(!dimage->ice2){
-        Rprintf("Ice2!\n");
         /*Gaussian fit*/
         if(dimage->noRHgauss==0)processed=processFloWave(denoised,data->nBins,dimage->gediIO.gFit,1.0);
 
@@ -420,7 +412,6 @@ SEXP processFloWave2(SEXP input, SEXP output) {
         if(dimage->readBinLVIS||dimage->readHDFlvis||dimage->readHDFgedi)writeResults(data,dimage,metric,i,denoised,processed,dimage->gediIO.inList[0]);
         else                                                             writeResults(data,dimage,metric,i,denoised,processed,dimage->gediIO.inList[i]);
       } else{  /*ICESat-2 mode*/
-        Rprintf("ICESat-2 mode!\n");
         photonCountCloud(denoised,data,&dimage->photonCount,dimage->outRoot,i,dimage->gediIO.den,&dimage->noise);
       }/*operation mode switch*/
     }/*is the data usable*/
@@ -460,25 +451,28 @@ SEXP processFloWave2(SEXP input, SEXP output) {
     //TIDY(metric->LmomInf);
     //TIDY(metric->LmomMax);
   }/*file loop*/
+  Rprintf("Begin tide up\n");
 
   /*TIDY LVIS data if it was read*/
   if(dimage->readBinLVIS)TIDY(dimage->lvis.data);
   if(dimage->readHDFgedi)dimage->hdfGedi=tidyGediHDF(dimage->hdfGedi);
 
 
-
+  Rprintf("Tide up 1\n");
   if(dimage->writeGauss)Rprintf("Written to %s.gauss.txt\n",dimage->outRoot);
   if(!dimage->ice2)Rprintf("Written to %s.metric.txt\n",dimage->outRoot);
   #ifdef USEPHOTON
   else             Rprintf(stdout,"Written to %s\n",dimage->photonCount.outNamen);
   #endif
-
+  Rprintf("Tide up 2\n");
 
   /*tidy up arrays*/
   tidySMoothPulse();
   TIDY(metric);
+  Rprintf("Tide up 3\n");
   if(dimage){
     if(dimage->lvisL2){
+      Rprintf("Tide up 4\n");
       TIDY(dimage->lvisL2->lfid);
       TIDY(dimage->lvisL2->shotN);
       TIDY(dimage->lvisL2->zG);
@@ -488,10 +482,12 @@ SEXP processFloWave2(SEXP input, SEXP output) {
     else                                        TTIDY((void **)dimage->gediIO.inList,dimage->gediIO.nFiles);
     dimage->gediIO.inList=NULL;
     if(dimage->opooMet){
+      Rprintf("Tide up 5\n");
       fclose(dimage->opooMet);
       dimage->opooMet=NULL;
     }
     if(dimage->opooGauss){
+      Rprintf("Tide up 6\n");
       fclose(dimage->opooGauss);
       dimage->opooGauss=NULL;
     }
@@ -503,17 +499,20 @@ SEXP processFloWave2(SEXP input, SEXP output) {
     TIDY(dimage->photonCount.prob);
     #endif
     if(dimage->gediIO.den){
+      Rprintf("Tide up 7\n");
       TTIDY((void **)dimage->gediIO.den->pulse,2);
       TIDY(dimage->gediIO.den->matchPulse);
       TIDY(dimage->gediIO.den->hardPulse);
       TIDY(dimage->gediIO.den);
     }
     if(dimage->gediIO.gFit){
+      Rprintf("Tide up 8\n");
       TTIDY((void **)dimage->gediIO.gFit->pulse,2);
       TIDY(dimage->gediIO.gFit);
     }
     dimage->hdfLvis=tidyLVISstruct(dimage->hdfLvis);
     TIDY(dimage);
+    Rprintf("Tide end\n");
   }
   return(ScalarInteger(0));
 }
