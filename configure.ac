@@ -59,9 +59,9 @@ fi
 HDF5_LIBS=`${H5CC} -show | ${GREP} -o "\-L[^[[:space:]]]\+\|\-l[a-zA-Z0-9]\+ " | tr "\n" " " | sed -e 's/  / /g'`
 HDF5_LIBS+="-lhdf5 -lhdf5_hl"
 
-echo 'int main() { return; }' > myconftest.cpp
+echo 'int main() { return; }' > myconftest.c
 HDF5_CFLAGS=`${H5CC} -show -c myconftest.cpp | ${GREP} -o "\-I[^[[:space:]]]\+" | tr "\n" " "`
-rm -f myconftest.cpp
+rm -f myconftest.c
 
 
 
