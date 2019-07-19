@@ -60,7 +60,7 @@ HDF5_LIBS=`${H5CC} -show | ${GREP} -o "\-L[^[[:space:]]]\+\|\-l[a-zA-Z0-9]\+ " |
 HDF5_LIBS+="-lhdf5 -lhdf5_hl"
 
 echo 'int main() { return; }' > myconftest.c
-HDF5_CFLAGS=`${H5CC} -show -c myconftest.c | ${GREP} -o "\-I[a-zA-Z0-9\_\-\/]\+" | tr "\n" " "`
+HDF5_CFLAGS=`${H5CC} -show -c myconftest.c | ${GREP} -o "\-I[[a-zA-Z0-9\_\-\/]]\+" | tr "\n" " "`
 rm -f myconftest.c
 
 
