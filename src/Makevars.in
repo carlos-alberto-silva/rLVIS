@@ -1,8 +1,11 @@
 # Makefile for GEDI simulator tools
-PKG_CFLAGS=@PKG_CFLAGS@
-PKG_LIBS=@PKG_LIBS@
-GSL_CFLAGS = @GSL_CFLAGS@
-GSL_LIBS   = @GSL_LIBS@
+PKG_CFLAGS=@PKG_CFLAGS@ 
+PKG_CFLAGS+=@HDF5_CFLAGS@
+PKG_CFLAGS+=@GSL_CFLAGS@
+PKG_LIBS=@PKG_LIBS@ 
+PKG_LIBS+=@GSL_LIBS@
+PKG_LIBS+=@HDF5_LIBS@
+
 
 HANCOCKTOOLS_ROOT = tools
 GEDIRAT_ROOT = gedisimulator
@@ -12,7 +15,7 @@ GSL_ROOT = gsl
 
 THIS=gediRat
 
-LIBS = -lgdal_i -lgeotiff_i
+LIBS = -lgdal -lgeotiff
 #PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -DH5_BUILT_AS_DYNAMIC_LIB -DGSL_DLL
 BIN=
 ARCH=$(PROCESSOR_ARCHITECTURE)
@@ -20,8 +23,8 @@ ARCH=$(PROCESSOR_ARCHITECTURE)
 HDF5_LIB = ../windows/include/
 LIBS += $(GSL_LIBS) -ltiff -L${GSL_ROOT}
 PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
--I${LIBCLIDAR_ROOT} -I${HDF5_LIB} -I. -I../windows/hdf5-1.8.16/include \
-$(GSL_CFLAGS) -I./cmpfit-1.2 -I../windows/libgeotiff-1.4.3 \
+-I${LIBCLIDAR_ROOT} -I. \
+-I./cmpfit-1.2 -I../windows/libgeotiff-1.4.3 \
 -I../windows/libgeotiff-1.4.3/libxtiff -I../windows/libtiff-4.0.9/include \
 -I$(RWINLIB)/include/gdal
 
