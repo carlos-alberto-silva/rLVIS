@@ -1130,14 +1130,12 @@ dataStruct *unpackHDFgedi(char *namen,gediIOstruct *gediIO,gediHDF **hdfGedi,int
 dataStruct *unpackHDFlvis(char *namen,lvisHDF **hdfLvis,gediIOstruct *gediIO,int numb)
 {
   dataStruct *data=NULL;
-  Rprintf("Unpacking HDFlvis");
   int i=0,botBin=0;
   int findLvisBottom(float *wave,int nBins);
   float *tempPulse=NULL;
   float pulseLenFromTX(float *,int);
   double dx=0,dy=0,scale=0;  /*for padded LVIS files*/
 
-  Rprintf("Reading data HDFlvis");
   /*read data if needed*/
   if(*hdfLvis==NULL){
     *hdfLvis=readLVIShdf(namen);
@@ -1146,12 +1144,10 @@ dataStruct *unpackHDFlvis(char *namen,lvisHDF **hdfLvis,gediIOstruct *gediIO,int
   }
 
   /*allocate space*/
-  Rprintf("Alocating space\n");
   if(!(data=(dataStruct *)calloc(1,sizeof(dataStruct)))){
     Rprintf("error control allocation.\n");
     error("1");
   }
-  Rprintf("Allocated!\n");
 
   
   data->useID=1;
@@ -1215,7 +1211,6 @@ dataStruct *unpackHDFlvis(char *namen,lvisHDF **hdfLvis,gediIOstruct *gediIO,int
   if((gediIO->nMessages>0)&&(hdfLvis[0]->nWaves>gediIO->nMessages))gediIO->nMessages=(int)(hdfLvis[0]->nWaves/gediIO->nMessages);
   else                                 gediIO->nMessages=1;
 
-  Rprintf("Finished allocation!\n");
   return(data);
 }/*unpackHDFlvis*/
 
