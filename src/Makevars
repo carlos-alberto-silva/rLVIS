@@ -54,6 +54,8 @@ PKG_LIBS += \
 	-lodbc32 -lodbccp32 -liconv -lpsapi -lws2_32 -lcrypt32 -lwldap32 -lsecur32 -lgdi32 \
 	-lgsl -lgslcblas
 
+all: clean
+
 clean:
 	rm -f $(SHLIB) $(OBJECTS)
 
