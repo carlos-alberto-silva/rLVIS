@@ -65,7 +65,7 @@ PKG_LIBS += \
 all: clean deps $(OBJECTS) $(SHLIB)
 
 deps: 
-	"Rscript.exe" "../tools/deps.R"
+	"Rscript ../tools/deps.R"
 
 clean:
 	rm -f $(SHLIB) $(OBJECTS)
