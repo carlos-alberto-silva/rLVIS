@@ -43,6 +43,29 @@ else
 fi
 
 
+
+##################
+## GDAL
+##################
+
+AC_PATH_PROG([GDAL_CONFIG], [gdal-config])
+
+## If gsl-config was found, let's use it
+if test "${GDAL_CONFIG}" != ""; then
+
+# Use gsl-config for header and linker arguments
+GDAL_CFLAGS=`${GDAL_CONFIG} --cflags`
+GDAL_LIBS=`${GDAL_CONFIG} --libs`
+else
+  AC_MSG_ERROR([gdal-config not found, is gdal installed?
+    Please install the libgdal.
+  	The required gsl library files can be installed as follows:
+  	    - Debian-based: 'sudo apt-get install libgdal-dev libproj-dev'
+        - OS X using Homebrew: 'brew install gdal'
+        - RPM-based (e.g Fedora): 'sudo yum install gdal-devel proj-devel'])
+fi
+
+
 ##################
 ## HDF5
 ##################
