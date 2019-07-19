@@ -373,7 +373,7 @@ SEXP processFloWave2(SEXP input, SEXP output) {
 
   /*loop over files*/
   for(i=0;i<dimage->gediIO.nFiles;i++){
-    if((i%dimage->gediIO.nMessages)==0) Rprintf("\rWave %d of %d          ",i+1,dimage->gediIO.nFiles);
+    Rprintf("\rWave %d of %d          ",i+1,dimage->gediIO.nFiles);
     /*read waveform*/
     data = unpackHDFlvis(dimage->gediIO.inList[0],&dimage->hdfLvis,&dimage->gediIO,i);
     if(dimage->readL2)setL2ground(data,i,dimage);
