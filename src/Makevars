@@ -1,54 +1,60 @@
 # Makefile for GEDI simulator tools
 HANCOCKTOOLS_ROOT = tools
+GEDIRAT_ROOT = gedisimulator
 LIBCLIDAR_ROOT = libclidar
-CMPFIT_ROOT = cmpfit
+CMPFIT_ROOT = cmpfit-1.2
 GSL_ROOT = gsl
-HDF5_LIB = hdf5/src
-LIBS = -lm -lgdal -lgeotiff
-BIN=
-ARCH=$(shell uname -m)
-LINKER=
-COPY=cp
+
 THIS=gediRat
-OUTPUT=/usr/bin/$(THIS)
 
-ifeq ("$(OS)","Windows_NT")
-	LIBS = -lgdal_i -lgeotiff_i
-	PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DGSL_DLL
-	BIN=.exe
-	ARCH=$(PROCESSOR_ARCHITECTURE)
-	LINKER=$(where link)
-	COPY=copy /Y
-	OUTPUT = $(CONDA_PREFIX)\Library\bin\$(THIS)$(BIN)
-endif
+LIBS = -lgdal_i -lgeotiff_i
+PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DGSL_DLL
+BIN=
+ARCH=$(PROCESSOR_ARCHITECTURE)
 
-
+HDF5_LIB = ../windows/include/
 LIBS += -lgsl -lgslcblas -ltiff -L${GSL_ROOT}
-PKG_CFLAGS += -I/usr/local/include -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) -I${LIBCLIDAR_ROOT} -I${HDF5_LIB} -I. -I/usr/include/libgeotiff -I/usr/include/gdal
+PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
+-I${LIBCLIDAR_ROOT} -I${HDF5_LIB} -I. -I../windows/hdf5-1.8.16/include \
+-I../windows/gsl-2.4/include -I./cmpfit-1.2 -I../windows/libgeotiff-1.4.3 \
+-I../windows/libgeotiff-1.4.3/libxtiff -I../windows/libtiff-4.0.9/include \
+-I$(RWINLIB)/include/gdal
+
 #CFLAGS += -Wl,--verbose
 #CFLAGS += -g
-src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c $(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c $(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c  $(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c $(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c #$(GEDIRAT_ROOT)/photonCount.c
+src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
+	$(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c \
+	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
+	$(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c \
+	$(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c \
+	$(HANCOCKTOOLS_ROOT)/tools.c #$(GEDIRAT_ROOT)/photonCount.c
 src += $(CMPFIT_ROOT)/mpfit.c
-obj = $(src:.c=.o)
+OBJECTS = $(src:.c=.o)
+OBJECTS += gediMetric.o
 EXE=$(THIS)$(BIN)
 
 # GSLFit=linear.o
 # MIN=mpfit
 # MPFIT=${CMPFIT_ROOT}/$(MIN)
 
-all: clean deps
 
-deps:
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/deps.R"
+VERSION = 2.2.3
+COMPILED_BY ?= gcc-4.6.3
+RWINLIB = ../windows/gdal2-$(VERSION)
 
 
-$(EXE): $(THIS).o $(obj)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBS) $(INCLS)
+PKG_LIBS += \
+	-L$(RWINLIB)/lib$(R_ARCH) \
+	-L../windows/gsl-2.4/lib$(R_ARCH) \
+	-lgdal -lsqlite3 -lspatialite -lproj -lgeos_c -lgeos  \
+	-ljson-c -lnetcdf -lmariadbclient -lpq -lintl -lwebp -lcurl -lssh2 -lssl -lcrypto \
+	-lkea -lhdf5_cpp -lhdf5_hl -lhdf5 -lexpat -lfreexl -lcfitsio \
+	-lmfhdf -ldf -lxdr \
+	-lopenjp2 -ljasper -lpng16 -ljpeg -ltiff -lgeotiff -lgif -lxml2 -llzma -lszip -lz \
+	-lodbc32 -lodbccp32 -liconv -lpsapi -lws2_32 -lcrypt32 -lwldap32 -lsecur32 -lgdi32 \
+	-lgsl -lgslcblas
 
 clean:
-	rm -f *% *~ *.o
+	rm -f $(SHLIB) $(OBJECTS)
 
-install: $(THIS)$(BIN)
-	$(COPY) "$(THIS)$(BIN)" "$(OUTPUT)"
-
-.PHONY: clean install
+.PHONY: clean winlibs

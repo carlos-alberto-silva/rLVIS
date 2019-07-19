@@ -111,7 +111,7 @@ void silhouetteImage(int nFiles,pCloudStruct **alsData,tlsScan *tlsData,rImageSt
     }/*voxel loop*/
   }else{  /*no data. Something is wrong*/
     Rprintf("No data provided\n");
-    exit(1);
+    error(1);
   }
 
   return;
@@ -207,7 +207,7 @@ rImageStruct *allocateRangeImage(float beamRad,float rRes,float iRes,float *grad
 
   if(!(rImage=(rImageStruct *)calloc(1,sizeof(rImageStruct)))){
     Rprintf("error range image structure allocation.\n");
-    exit(1);
+    error(1);
   }
 
   rImage->x0=origin[0];
@@ -516,7 +516,7 @@ voxStruct *voxAllocate(int nFiles,float *vRes,double *bounds,char useRMSE)
 
   if(!(vox=(voxStruct *)calloc(1,sizeof(voxStruct)))){
     Rprintf("error voxel structure allocation.\n");
-    exit(1);
+    error(1);
   }
 
   /*note that findVoxels() needs minX maxX etc, different to dimage's minX minY etc*/
@@ -533,7 +533,7 @@ voxStruct *voxAllocate(int nFiles,float *vRes,double *bounds,char useRMSE)
   /*check for memory wrapping*/
   if(((uint64_t)vox->nX*(uint64_t)vox->nY*(uint64_t)vox->nZ)>=2147483647){
     Rprintf("Voxel bounds are too big to handle. Reduce %d %d %d\n",vox->nX,vox->nY,vox->nZ);
-    exit(1);
+    error(1);
   }
 
   vox->nVox=vox->nX*vox->nY*vox->nZ;

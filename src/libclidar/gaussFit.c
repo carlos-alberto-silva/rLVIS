@@ -142,7 +142,7 @@ float *fitMultiGauss(float *x,float *decon,int nBins,float gSmooth,int *totGauss
   if((*totGauss)>0){
     if(!(fitted=(float *)realloc(fitted,(nBins+3*(*totGauss))*sizeof(float)))){
       Rprintf("Error in fitted Gaussian realoocation %lu\n",(nBins+3*(*totGauss))*sizeof(float));
-      exit(1);
+      error(1);
     }
     k=0;
     for(i=0;i<returns->nFeat;i++){
@@ -196,13 +196,13 @@ float *fitSingleGauss(float *x,float *decon,int nBins,float gSmooth,int *totGaus
   /*allocate arrays*/
   if(!(config=(mp_config *)calloc(1,sizeof(mp_config)))){
     Rprintf("error in control structure.\n");
-    exit(1);
+    error(1);
   }
   config->nofinitecheck=1;
   config->maxiter=1000;
   if(!(result=(mp_result *)calloc(1,sizeof(mp_result)))){
     Rprintf("error in mpfit structure.\n");
-    exit(1);
+    error(1);
   }
   result->resid=dalloc(nBins,"",0);
   result->xerror=dalloc(nParams,"",0);
@@ -211,7 +211,7 @@ float *fitSingleGauss(float *x,float *decon,int nBins,float gSmooth,int *totGaus
   /*parameter bounds*/
   if(!(parStruct=(mp_par *)calloc(nParams,sizeof(mp_par)))){
     Rprintf("error in bound structure.\n");
-    exit(1);
+    error(1);
   }
   /*mu*/
   parStruct[0].fixed=0;
@@ -353,7 +353,7 @@ float *fitGauss(float *x,float *y,int numb,float minErr,turnStruct *turnings,flo
   /*load observations into a structure for passing about*/
   if(!(data=(dataStruct *)calloc(1,sizeof(dataStruct)))){
     Rprintf("error in control structure.\n");
-    exit(1);
+    error(1);
   }
   data->x=x;
   data->y=y;
@@ -371,12 +371,12 @@ float *fitGauss(float *x,float *y,int numb,float minErr,turnStruct *turnings,flo
 
   if(!(config=(mp_config *)calloc(1,sizeof(mp_config)))){
     Rprintf("error in control structure.\n");
-    exit(1);
+    error(1);
   }
   config->nofinitecheck=1;
   if(!(result=(mp_result *)calloc(1,sizeof(mp_result)))){
     Rprintf("error in mpfit structure.\n");
-    exit(1);
+    error(1);
   }
   result->resid=dalloc(numb,"",0);
   result->xerror=dalloc(nParams,"",0);
@@ -470,7 +470,7 @@ multRet *filterData(float *y,int numb,float offset)
 
   if(!(returns=(multRet *)calloc(1,sizeof(multRet)))){
     Rprintf("error in multiple return structure.\n");
-    exit(1);
+    error(1);
   }
   returns->nFeat=0;
   returns->temp=NULL;
@@ -669,7 +669,7 @@ turnStruct *findTurning(float *y,int width,float preSmooth,float *x)
 
   if(!(turnings=(turnStruct *)calloc(1,sizeof(turnStruct)))){
     Rprintf("error in multiple return structure.\n");
-    exit(1);
+    error(1);
   }
   turnings->nFeats=0;
   turnings->bound=NULL;
@@ -709,7 +709,7 @@ mp_par *setGaussBounds(float *x,float *y,int numb,double *doParams,int nParams,i
 
   if(!(parStruct=(mp_par *)calloc(nParams,sizeof(mp_par)))){
     Rprintf("error in bound structure.\n");
-    exit(1);
+    error(1);
   }
 
   for(i=0;i<nGauss;i++){

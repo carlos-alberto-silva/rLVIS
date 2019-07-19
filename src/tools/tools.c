@@ -50,7 +50,7 @@ void checkArguments(int numberOfArguments,int thisarg,int argc,char *option)
   for(i=0;i<numberOfArguments;i++){
     if(thisarg+1+i>=argc){
       fprintf(stderr,"error in number of arguments for %s option: %d required\n",option,numberOfArguments);
-      exit(1);
+      error(1);
     }
   }
 
@@ -126,15 +126,15 @@ float *floSwap(float *bytes,uint64_t numb)
 
   if(!(ibuff=(floBuff *)calloc(numb,sizeof(floBuff)))){
     fprintf(stderr,"error in float buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(obuff=(floBuff *)calloc(numb,sizeof(floBuff)))){
     fprintf(stderr,"error in float buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(buff=(float *)calloc(numb,sizeof(float)))){
     fprintf(stderr,"error in output buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   for(j=0;j<numb;j++){
     ibuff[j].x=bytes[j];
@@ -159,21 +159,21 @@ int *intSwap(int *bytes,uint64_t numb)
   intBuff *iibuff=NULL,*oibuff=NULL;
   int *buff=NULL;   /*the pointer to pass back*/
 
-  if(!bytes){printf("Something is wrong\n");exit(1);}
+  if(!bytes){printf("Something is wrong\n");error(1);}
 
   if(numb<1)return(buff);
 
   if(!(iibuff=(intBuff *)calloc(numb,sizeof(intBuff)))){
     fprintf(stderr,"error in int buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(oibuff=(intBuff *)calloc(numb,sizeof(intBuff)))){
     fprintf(stderr,"error in int buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(buff=(int *)calloc(numb,sizeof(int)))){
     fprintf(stderr,"error in output buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   for(j=0;j<numb;j++){
     iibuff[j].x=bytes[j];
@@ -199,21 +199,21 @@ uint64_t *uint64Swap(uint64_t *bytes,uint64_t numb)
   intBuff *iibuff=NULL,*oibuff=NULL;
   uint64_t *buff=NULL;   /*the pointer to pass back*/
 
-  if(!bytes){printf("Something is wrong\n");exit(1);}
+  if(!bytes){printf("Something is wrong\n");error(1);}
 
   if(numb<1)return(buff);
 
   if(!(iibuff=(intBuff *)calloc(numb,sizeof(intBuff)))){
     fprintf(stderr,"error in int buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(oibuff=(intBuff *)calloc(numb,sizeof(intBuff)))){
     fprintf(stderr,"error in int buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(buff=(uint64_t *)calloc(numb,sizeof(uint64_t)))){
     fprintf(stderr,"error in output buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   for(j=0;j<numb;j++){
     iibuff[j].x=bytes[j];
@@ -243,15 +243,15 @@ long int *lintSwap(long int *bytes,uint64_t numb)
 
   if(!(iibuff=(lintBuff *)calloc(numb,sizeof(lintBuff)))){
     fprintf(stderr,"error in int buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(oibuff=(lintBuff *)calloc(numb,sizeof(lintBuff)))){
     fprintf(stderr,"error in int buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(buff=(long int *)calloc(numb,sizeof(long int)))){
     fprintf(stderr,"error in output buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   for(j=0;j<numb;j++){
     iibuff[j].x=bytes[j];
@@ -280,15 +280,15 @@ double *doSwap(double *bytes,uint64_t numb)
 
   if(!(ibuff=(doBuff *)calloc(numb,sizeof(doBuff)))){
     fprintf(stderr,"error in double buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(obuff=(doBuff *)calloc(numb,sizeof(doBuff)))){
     fprintf(stderr,"error in double buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(buff=(double *)calloc(numb,sizeof(double)))){
     fprintf(stderr,"error in output buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   for(j=0;j<numb;j++){
     ibuff[j].x=bytes[j];
@@ -319,15 +319,15 @@ int16_t *int16Swap(int16_t *bytes,uint64_t numb)
 
   if(!(ibuff=(int16Buff *)calloc(numb,sizeof(int16Buff)))){
     fprintf(stderr,"error in double buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(obuff=(int16Buff *)calloc(numb,sizeof(int16Buff)))){
     fprintf(stderr,"error in double buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   if(!(buff=(int16_t *)calloc(numb,sizeof(int16_t)))){
     fprintf(stderr,"error in output buffer allocation.\n");
-    exit(1);
+    error(1);
   }
   for(j=0;j<numb;j++){
     ibuff[j].x=bytes[j];
@@ -429,7 +429,7 @@ float *reverseArr(float *arr,int length)
 
   if(!(jimlad=(float *)calloc(length,sizeof(float)))){
     fprintf(stderr,"error in array reverseing array\n");
-    exit(1);
+    error(1);
   }
   for(i=0;i<length;i++)jimlad[i]=arr[length-(i+1)];
 
@@ -447,7 +447,7 @@ double *dalloc(int length,char *namen,int n)
   if(!(jimlad=(double *)calloc(length,sizeof(double)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*dalloc*/
@@ -461,7 +461,7 @@ int *ialloc(int length,char *namen,int n)
   if(!(jimlad=(int *)calloc(length,sizeof(int)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*ialloc*/
@@ -475,7 +475,7 @@ char *challoc(uint64_t length,char *namen,int n)
   if(!(jimlad=(char *)calloc(length,sizeof(char)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %llu\n",(unsigned long long int)length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*challoc*/
@@ -490,7 +490,7 @@ unsigned char *uchalloc(uint64_t length,char *namen,int n)
   if(!(jimlad=(unsigned char *)calloc(length,sizeof(unsigned char)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %llu\n",(unsigned long long int)length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*uchalloc*/
@@ -505,7 +505,7 @@ float *falloc(uint64_t length,char *namen,int n)
   if(!(jimlad=(float *)calloc(length,sizeof(float)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %lu\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*falloc*/
@@ -519,7 +519,7 @@ short int *shalloc(int length,char *namen,int n)
   if(!(jimlad=(short int *)calloc(length,sizeof(short int)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*shalloc*/
@@ -533,7 +533,7 @@ int **iIalloc(int length,char *namen,int n)
   if(!(jimlad=(int **)calloc(length,sizeof(int *)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d int pointers\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*iIalloc*/
@@ -547,7 +547,7 @@ char **chChalloc(int length,char *namen,int n)
   if(!(jimlad=(char **)calloc(length,sizeof(char *)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d char pointers\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*chChalloc*/
@@ -562,7 +562,7 @@ unsigned char **uchChalloc(int length,char *namen,int n)
   if(!(jimlad=(unsigned char **)calloc(length,sizeof(unsigned char *)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d char pointers\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*chChalloc*/
@@ -577,7 +577,7 @@ float **fFalloc(int length,char *namen,int n)
   if(!(jimlad=(float **)calloc(length,sizeof(float *)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d float pointers\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*fFalloc*/
@@ -591,7 +591,7 @@ double **dDalloc(int length,char *namen,int n)
   if(!(jimlad=(double **)calloc(length,sizeof(double *)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d float pointers\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*dDalloc*/
@@ -606,7 +606,7 @@ short int **shIalloc(int length,char *namen,int n)
   if(!(jimlad=(short int **)calloc(length,sizeof(short int *)))){
     fprintf(stderr,"error in %s array allocation %d\n",namen,n);
     fprintf(stderr,"allocating %d int pointers\n",length);
-    exit(1);
+    error(1);
   }
   return(jimlad);
 }/*iIalloc*/
@@ -620,7 +620,7 @@ int *markInt(int length,int *jimlad,int newVal)
   if(length>0){
     if(!(jimlad=(int *)realloc(jimlad,(length+1)*sizeof(int)))){
       fprintf(stderr,"Error in int reallocation within markInt, allocating %lu\n",(length+1)*sizeof(int));
-      exit(1);
+      error(1);
     }
   }else jimlad=ialloc(length+1,"int",0);
   jimlad[length]=newVal;
@@ -652,12 +652,12 @@ uint32_t *markUint32(int length,uint32_t *jimlad,uint32_t newVal)
   if(length>0){
     if(!(jimlad=(uint32_t *)realloc(jimlad,(length+1)*sizeof(uint32_t)))){
       fprintf(stderr,"Error in uint32 reallocation, allocaing %lu\n",(length+1)*sizeof(uint32_t));
-      exit(1);
+      error(1);
     }
   }else{
     if(!(jimlad=(uint32_t *)calloc(length+1,sizeof(uint32_t)))){
       fprintf(stderr,"error tls allocation.\n");
-      exit(1);
+      error(1);
     }
   }
   jimlad[length]=newVal;
@@ -673,7 +673,7 @@ float *markFloat(int length,float *jimlad,float newVal)
   if(length>0){
     if(!(jimlad=(float *)realloc(jimlad,(length+1)*sizeof(float)))){
       fprintf(stderr,"Error in float reallocation, %lu\n",(length+1)*sizeof(float));
-      exit(1);
+      error(1);
     }
   }else        jimlad=falloc((uint64_t)length+1,"int",0);
   jimlad[length]=newVal;
@@ -705,7 +705,7 @@ double *markDo(int length,double *jimlad,double newVal)
   if(length>0){
     if(!(jimlad=(double *)realloc(jimlad,(length+1)*sizeof(double)))){
       fprintf(stderr,"Error in double reallocation %lu\n",(length+1)*sizeof(double));
-      exit(1);
+      error(1);
     }
   }else        jimlad=dalloc(length+1,"int",0);
   jimlad[length]=newVal;
@@ -720,7 +720,7 @@ char *markChar(int length,char *jimlad,char newVal)
   if(length>0){
     if(!(jimlad=(char*)realloc(jimlad,(length+1)*sizeof(char)))){
       fprintf(stderr,"Error in char reallocation %lu\n",(length+1)*sizeof(char));
-      exit(1);
+      error(1);
     }
   }else jimlad=challoc((uint64_t)length+1,"int",0);
   jimlad[length]=newVal;
@@ -735,7 +735,7 @@ unsigned char *markUchar(int length,unsigned char *jimlad,unsigned char newVal)
   if(length>0){
     if(!(jimlad=(unsigned char *)realloc(jimlad,(length+1)*sizeof(unsigned char)))){
       fprintf(stderr,"Error in uchar allocation, %lu\n",(length+1)*sizeof(unsigned char));
-      exit(1);
+      error(1);
     }
   }else jimlad=uchalloc((uint64_t)length+1,"int",0);
   jimlad[length]=newVal;
@@ -820,7 +820,7 @@ float singleMedian(float *jimlad,int numb)
     median=jimlad[(int)(numb/2)];
   }else{
     fprintf(stderr,"No data points for median?\n");
-    exit(1);
+    error(1);
   }
 
   return(median);
@@ -839,7 +839,7 @@ float *medianFloat(float *jimlad,int width,int length)
 
   if(width<3){
     fprintf(stderr,"Median filter won't work with a width of %d for float\n",width);
-    exit(1);
+    error(1);
   }
 
   filtered=falloc((uint64_t)length,"median filter",0);
@@ -860,7 +860,7 @@ float *medianFloat(float *jimlad,int width,int length)
       filtered[i]=temp[(int)(nIn/2)];
     }else{
       fprintf(stderr,"That didn't work, number in %d for bin %d of %d\n",nIn,i,length);
-      exit(1);
+      error(1);
     }
   }  /*array loop*/
 
@@ -881,7 +881,7 @@ unsigned char *medianUchar(unsigned char *jimlad,int width,int length)
 
   if(width<3){
     fprintf(stderr,"Median filter won't work with a width of %d for uchar\n",width);
-    exit(1);
+    error(1);
   }
 
   filtered=uchalloc((uint64_t)length,"median filter",0);
@@ -902,7 +902,7 @@ unsigned char *medianUchar(unsigned char *jimlad,int width,int length)
       filtered[i]=temp[(int)(nIn/2)];
     }else{
       fprintf(stderr,"That didn't work, number in %d for bin %d of %d\n",nIn,i,length);
-      exit(1);
+      error(1);
     }
   }  /*array loop*/
 
@@ -923,7 +923,7 @@ double *medianDouble(double *jimlad,int width,int length)
 
   if(width<3){
     fprintf(stderr,"Median filter won't work with a width of %d for double\n",width);
-    exit(1);
+    error(1);
   }
 
   filtered=dalloc(length,"median filter",0);
@@ -944,7 +944,7 @@ double *medianDouble(double *jimlad,int width,int length)
       filtered[i]=temp[(int)(nIn/2)];
     }else{
       fprintf(stderr,"That didn't work, number in %d for bin %d of %d\n",nIn,i,length);
-      exit(1);
+      error(1);
     }
   }  /*array loop*/
 
