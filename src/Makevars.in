@@ -22,8 +22,8 @@ ARCH=$(PROCESSOR_ARCHITECTURE)
 HDF5_LIB = ../windows/include/
 LIBS += $(GSL_LIBS) -ltiff -L${GSL_ROOT}
 PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
--I${LIBCLIDAR_ROOT} -I. \
--I./cmpfit-1.2 -I../windows/libgeotiff-1.4.3 \
+-I${LIBCLIDAR_ROOT} -I. -I/usr/include/geotiff \
+-I./cmpfit-1.2 -I/usr/include/libgeotiff \
 -I../windows/libgeotiff-1.4.3/libxtiff -I../windows/libtiff-4.0.9/include \
 -I$(RWINLIB)/include/gdal
 
