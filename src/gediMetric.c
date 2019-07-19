@@ -64,7 +64,6 @@ float rhoC;
 
 /*###########################################################*/
 /*function definition used here only*/
-void rprintf(char*, ...);
 float *findLAIprofile(float *,float,int,float,int *,double,float,double *,float);
 
 
@@ -460,10 +459,10 @@ SEXP processFloWave2(SEXP input, SEXP output) {
 
 
 
-  if(dimage->writeGauss)rprintf("Written to %s.gauss.txt\n",dimage->outRoot);
-  if(!dimage->ice2)rprintf("Written to %s.metric.txt\n",dimage->outRoot);
+  if(dimage->writeGauss)Rprintf("Written to %s.gauss.txt\n",dimage->outRoot);
+  if(!dimage->ice2)Rprintf("Written to %s.metric.txt\n",dimage->outRoot);
   #ifdef USEPHOTON
-  else             rprintf(stdout,"Written to %s\n",dimage->photonCount.outNamen);
+  else             Rprintf(stdout,"Written to %s\n",dimage->photonCount.outNamen);
   #endif
 
 
@@ -509,17 +508,6 @@ SEXP processFloWave2(SEXP input, SEXP output) {
     TIDY(dimage);
   }
   return(ScalarInteger(0));
-}
-
-void rprintf(char* in, ...) {
-  va_list args;
-  va_start (args, in);
-  char *out;
-  int size;
-  size = vsnprintf(out, 1000, in, args);
-  R_WriteConsole(out, size);
-  R_FlushConsole();
-  va_end (args);
 }
 
 /*###########################################################*/

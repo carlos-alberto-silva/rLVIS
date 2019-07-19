@@ -1151,6 +1151,9 @@ dataStruct *unpackHDFlvis(char *namen,lvisHDF **hdfLvis,gediIOstruct *gediIO,int
     Rprintf("error control allocation.\n");
     error("1");
   }
+  Rprintf("Allocated!");
+
+  
   data->useID=1;
   data->nBins=hdfLvis[0]->nBins;
   data->nWaveTypes=1;

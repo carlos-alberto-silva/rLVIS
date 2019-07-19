@@ -10,25 +10,12 @@ HANCOCKTOOLS_ROOT = tools
 GEDIRAT_ROOT = gedisimulator
 LIBCLIDAR_ROOT = libclidar
 CMPFIT_ROOT = cmpfit-1.2
-GSL_ROOT = gsl
 
-THIS=gediRat
 
-LIBS = -lgdal -lgeotiff
-#PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -DH5_BUILT_AS_DYNAMIC_LIB -DGSL_DLL
-BIN=
-ARCH=$(PROCESSOR_ARCHITECTURE)
-
-HDF5_LIB = ../windows/include/
-LIBS += $(GSL_LIBS) -ltiff -L${GSL_ROOT}
-PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
+PKG_CFLAGS += -I$(GEDIRAT_ROOT) -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
 -I${LIBCLIDAR_ROOT} -I. -I/usr/include/geotiff \
--I./cmpfit-1.2 -I/usr/include/libgeotiff \
--I../windows/libgeotiff-1.4.3/libxtiff -I../windows/libtiff-4.0.9/include \
--I$(RWINLIB)/include/gdal
+-I./cmpfit-1.2 -I/usr/include/libgeotiff
 
-#CFLAGS += -Wl,--verbose
-#CFLAGS += -g
 src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c \
 	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
@@ -38,17 +25,6 @@ src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 src += $(CMPFIT_ROOT)/mpfit.c
 OBJECTS = $(src:.c=.o)
 OBJECTS += gediMetric.o
-EXE=$(THIS)$(BIN)
-
-# GSLFit=linear.o
-# MIN=mpfit
-# MPFIT=${CMPFIT_ROOT}/$(MIN)
-
-
-VERSION = 2.2.3
-COMPILED_BY ?= gcc-4.6.3
-RWINLIB = ../windows/gdal2-$(VERSION)
-
 
 all: clean deps $(OBJECTS) $(SHLIB)
 
