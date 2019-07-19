@@ -306,7 +306,7 @@ float matchRMSE(int pBins,float *pulse,float pRes,int maxPulse,float pulseE,int 
 
   if(pRes>res){
     Rprintf("Pulse not sampled well enough\n");
-    error(1);
+    error("1");
   }
 
   eWithout=0.0;
@@ -549,7 +549,7 @@ float *fitGaussians(float *wave,int waveLen,denPar *decon)
   /*trim the fitted wave*/
   if(!(gaussWave=(float *)realloc(gaussWave,waveLen*sizeof(float)))){
     Rprintf("Error reallocating %lu\n",waveLen*sizeof(float));
-    error(1);
+    error("1");
   }
 
   return(gaussWave);
@@ -599,7 +599,7 @@ void medNoiseStats(float *wave,uint32_t waveLen,float *meanN,float *thresh,float
       }
     }else{
       Rprintf("index issue %d %f\n",ind,wave[i]);
-      error(1);
+      error("1");
     }
   }
 
@@ -627,10 +627,10 @@ void meanNoiseStats(float *sampled,uint32_t waveLen,float *meanN,float *thresh,f
   start=2;
   if((uint32_t)statBins>waveLen){
     Rprintf("Not enough bins for this statistics length %d %d\n",statBins,(int)waveLen);
-    error(1);
+    error("1");
   }else if((statBins-start)<=0){
     Rprintf("What are you doing? Start too soon %d %d\n",statBins,start);
-    error(1);
+    error("1");
   }
 
   /*NOTE, subtract 2 from noise bins to avoid low smoothing at signal start*/
@@ -757,7 +757,7 @@ float *smooth(float sWidth,int nBins,float *data,float res)
       tP=smooPulse.nPulses;
       if(!(smooPulse.pulse=(float **)realloc(smooPulse.pulse,(smooPulse.nPulses+1)*sizeof(float *)))){
         Rprintf("Error reallocating %lu\n",(smooPulse.nPulses+1)*sizeof(float *));
-        error(1);
+        error("1");
       }
       smooPulse.res=markFloat(smooPulse.nPulses,smooPulse.res,newRes);
       smooPulse.pulse[tP]=setPulse(sWidth,&nPulse,smooPulse.res[smooPulse.nPulses]);
@@ -866,7 +866,7 @@ float *deconvolve(float *data,int nBins,float **pulse,int pBins,float res,int ma
   else if(meth==1)deconDo=richLucy(dataDo,pulseDo,numb,maxIter,minChange);
   else{
     Rprintf("Deconvolution method not defined\n");
-    error(1);
+    error("1");
   }
   TIDY(pulseDo);  /*tidy as we go along*/
   TIDY(dataDo);
@@ -1159,7 +1159,7 @@ void readPulse(denPar *denoise)
   if(!denoise->deconGauss){
     if((ipoo=fopen(denoise->pNamen,"r"))==NULL){
       Rprintf("Error opening pulse file %s\n",denoise->pNamen);
-      error(1);
+      error("1");
     }
 
     denoise->pBins=0;
@@ -1171,7 +1171,7 @@ void readPulse(denPar *denoise)
     /*rewind*/
     if(fseek(ipoo,(long)0,SEEK_SET)){ /*rewind to start of file*/
       Rprintf("fseek error\n");
-      error(1);
+      error("1");
     }
 
     denoise->pulse=fFalloc(2,"",0);
@@ -1185,7 +1185,7 @@ void readPulse(denPar *denoise)
         if(sscanf(line,"%s %s",temp[0],temp[1])==2){
           if(i>denoise->pBins){
             Rprintf("Error\n");
-            error(1);
+            error("1");
           }
           denoise->pulse[0][i]=atof(&(temp[0][0]))*denoise->pScale;
           denoise->pulse[1][i]=atof(&(temp[1][0]));
@@ -1259,7 +1259,7 @@ void readPulse(denPar *denoise)
     if(denoise->gaussFilt){
       if(nGauss>1){
         Rprintf("Multiple Gaussians fitted to pulse\n");
-        error(1);
+        error("1");
       }
       denoise->hardWidth=gaussPar[2]*denoise->hardTol;
     }
@@ -1405,7 +1405,7 @@ double *findGroundNN(pCloudStruct **data,int nFiles,double *minX,double *minY,fl
   double *gDEM=NULL;
 
   Rprintf("The nearest neighbour DEM option is not ready yet\n");
-  error(1);
+  error("1");
 
   return(gDEM);
 }/*findGroundNN*/
@@ -1557,12 +1557,12 @@ void fitPolyPlane(groundDstruct *groundData)
   /*allocate arrays*/
   if(!(config=(mp_config *)calloc(1,sizeof(mp_config)))){
     Rprintf("error in control structure.\n");
-    error(1);
+    error("1");
   }
   config->nofinitecheck=1;
   if(!(result=(mp_result *)calloc(1,sizeof(mp_result)))){
     Rprintf("error in mpfit structure.\n");
-    error(1);
+    error("1");
   }
   result->resid=dalloc(groundData->nPoints,"",0);
   result->xerror=dalloc(nPar,"",0);
@@ -1575,7 +1575,7 @@ void fitPolyPlane(groundDstruct *groundData)
   fitCheck=mpfit(groundErr,groundData->nPoints,nPar,groundData->par,parStruct,config,(void *)groundData,result);
   if(fitCheck<0){
     Rprintf("fitCheck %d\n",fitCheck);
-    error(1);
+    error("1");
   }
 
   /*tidy up*/
@@ -1604,7 +1604,7 @@ groundDstruct *arrangeGroundData(pCloudStruct **data,int nFiles,double groundBre
   /*initialise*/
   if(!(groundD=(groundDstruct *)calloc(1,sizeof(groundDstruct)))){
     Rprintf("error in groundDstruct structure.\n");
-    error(1);
+    error("1");
   }
   groundD->nPoints=0;
   groundD->xUse=NULL;
@@ -1693,7 +1693,7 @@ mp_par *setGroundBounds(int *nPar)
 
   if(!(parStruct=(mp_par *)calloc(nPar[0]+nPar[1],sizeof(mp_par)))){
     Rprintf("error in bound structure.\n");
-    error(1);
+    error("1");
   }
 
   count=0;
@@ -1967,7 +1967,7 @@ float *waveLmoments(float *rh,int nRH,float rhRes,int nLm)
   if(nLm==0)return(Lmoments);
   else if(nLm>4){
     Rprintf("Not set up to deal with more than 4 L-moments yet\n");
-    error(1);
+    error("1");
   }
 
   res=rhRes/100.0;

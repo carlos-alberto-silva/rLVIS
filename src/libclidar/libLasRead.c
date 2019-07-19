@@ -59,13 +59,13 @@ lasFile *readLasHead(char *namen,uint64_t pBuffSize)
 
   if(!(las=(lasFile *)calloc(1,sizeof(lasFile)))){
     Rprintf("error lasFile allocation.\n");
-    error(1);
+    error("1");
   }
 
   /*open file*/
   if((las->ipoo=fopen(namen,"rb"))==NULL){
     Rprintf("Error opening input file \"%s\"\n",namen);
-    error(1);
+    error("1");
   }
   nFilesOpen++;
   strcpy(las->namen,namen);
@@ -76,11 +76,11 @@ lasFile *readLasHead(char *namen,uint64_t pBuffSize)
   pubHead=challoc((uint64_t)tempLen,"pubHead",0);
   if(fread(&(pubHead[0]),sizeof(char),tempLen,las->ipoo)!=tempLen){
     Rprintf("error reading data from %s\n",namen);
-    error(1);
+    error("1");
   }
   if(strncasecmp(pubHead,"LASF",4)){  /*check is a las file*/
     Rprintf("Incorrect filetype for %s\n",namen);
-    error(1);
+    error("1");
   }/*check it is a LASF file*/
 
   offset=24;  /*version major*/
@@ -95,13 +95,13 @@ lasFile *readLasHead(char *namen,uint64_t pBuffSize)
   if((las->vMajor!=1)||(las->vMinor>4)){
     Rprintf("Version too new for this program\n");
     Rprintf("Version %d.%d\n",las->vMajor,las->vMinor);
-    error(1);
+    error("1");
   }
 
   /*rewind*/
   if(fseek(las->ipoo,(long)0,SEEK_SET)){ /*rewind to start of file*/
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
 
   /*set header length depending on version*/
@@ -109,7 +109,7 @@ lasFile *readLasHead(char *namen,uint64_t pBuffSize)
 
   if(fread(&(pubHead[0]),sizeof(char),las->headSize,las->ipoo)!=las->headSize){
     Rprintf("error reading data from %s\n",namen);
-    error(1);
+    error("1");
   }
 
   /*copy memory bits over*/
@@ -161,7 +161,7 @@ lasFile *readLasHead(char *namen,uint64_t pBuffSize)
     if((las->nPoints==0)&&(temp64>0)){
       if(temp64>=4294967296){
         Rprintf("Currently the library cannot handle more than 4294967296 points per file\n");
-        error(1);
+        error("1");
       }
       las->nPoints=(uint32_t)temp64;
     }
@@ -204,13 +204,13 @@ void readLasGeo(lasFile *las)
   /*open file*/
   if((las->ipoo=fopen(las->namen,"rb"))==NULL){
     Rprintf("Error opening input file \"%s\"\n",las->namen);
-    error(1);
+    error("1");
   }
   nFilesOpen++;
 
   if(fseeko(las->ipoo,(long)las->headSize,SEEK_SET)){
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
 
   /*read the variable header - needed for waveform information*/
@@ -221,7 +221,7 @@ void readLasGeo(lasFile *las)
     varHead[i]=challoc((uint64_t)headLen,"variable headers",i+1);
     if(fread(&(varHead[i][0]),sizeof(char),headLen,las->ipoo)!=headLen){
       Rprintf("Error reading variable header\n");
-      error(1);
+      error("1");
     }
     offset=0;
     memcpy(&reserve,&varHead[i][offset],2);
@@ -236,7 +236,7 @@ void readLasGeo(lasFile *las)
     varData=challoc((uint64_t)varLen,"variable data",0);
     if(fread(&(varData[0]),sizeof(char),varLen,las->ipoo)!=varLen){
       Rprintf("Error reading variable header\n");
-      error(1);
+      error("1");
     }
     if(!strncasecmp(namen,"LASF_Projection",16)){  /*geo projection*/
       if(recID==34735){
@@ -282,7 +282,7 @@ void readLasPoint(lasFile *las,uint32_t j)
   if(las->ipoo==NULL){
     if((las->ipoo=fopen(las->namen,"rb"))==NULL){
       Rprintf("Error opening input file \"%s\"\n",las->namen);
-      error(1);
+      error("1");
     }
     nFilesOpen++;
   }
@@ -298,16 +298,16 @@ void readLasPoint(lasFile *las,uint32_t j)
 
     if(!(las->pointBuff=(char *)calloc(las->buffByte,sizeof(char)))){
       Rprintf("error point buffer allocation.\n");
-      error(1);
+      error("1");
     } 
 
     if(fseeko(las->ipoo,(long)las->offsetToP+(long)((uint64_t)las->buffStart*(uint64_t)las->pRecLen),SEEK_SET)){
       Rprintf("fseek error\n");
-      error(1);
+      error("1");
     }
     if(fread(&(las->pointBuff[0]),sizeof(char),las->buffByte,las->ipoo)!=las->buffByte){
       Rprintf("Error reading point data, size %d\n",(int)las->buffByte);
-      error(1);
+      error("1");
     }
   }/*read buffer*/
 
@@ -408,11 +408,11 @@ unsigned char *readLasWave(uint64_t waveMap,int32_t waveLen,FILE *ipoo,uint64_t 
   wave=uchalloc((uint64_t)waveLen,"waveform",(int)waveMap);
   if(fseeko(ipoo,(off_t)((uint64_t)waveMap+(uint64_t)waveStart),SEEK_SET)){
     printf("Error seeking through las file\n");
-    error(1);
+    error("1");
   }
   if(fread(&(wave[0]),sizeof(unsigned char),waveLen,ipoo)!=waveLen){
     Rprintf("Error reading waveform at %ld for %ld\n",(long int)((uint64_t)waveMap+(uint64_t)waveStart),(long int)waveLen);
-    error(1);
+    error("1");
   }
   return(wave);
 }/*readLasWaveform*/
@@ -430,7 +430,7 @@ char **readInList(int *nFiles,char *inList)
 
   if((ipoo=fopen(inList,"r"))==NULL){
     Rprintf("Error opening input file list \"%s\"\n",inList);
-    error(1);
+    error("1");
   }
   i=0;   /*count up files*/
   while(fgets(line,399,ipoo)!=NULL){
@@ -439,7 +439,7 @@ char **readInList(int *nFiles,char *inList)
 
   if(fseek(ipoo,(long)0,SEEK_SET)){ /*rewind to start of file*/
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
   *nFiles=i;
   namen=chChalloc(*nFiles,"file names",0);
@@ -550,7 +550,7 @@ void readGBIC(char appGBIC,char balFlights,lasFile **lasIn,listLas *lasList)
     if(appGBIC){  /*open file if needed*/
       if((ipoo=fopen(lasList->gbicNamen[i],"r"))==NULL){
         Rprintf("Error opening GBIC file \"%s\"\n",lasList->gbicNamen[i]);
-        error(1);
+        error("1");
       }
       while(fgets(line,200,ipoo)!=NULL){
         if(strncasecmp(line,"#",1)){
@@ -581,7 +581,7 @@ lasFile **lfalloc(int numb)
   if(!(lasIn=(lasFile **)calloc(numb,sizeof(lasFile *)))){
     Rprintf("error in las file structure\n");
     Rprintf("Allocating %d\n",numb);
-    error(1);
+    error("1");
   }
 
   return(lasIn);
@@ -601,12 +601,12 @@ listLas *readLasList(char *namen)
 
   if(!(lasList=(listLas *)calloc(1,sizeof(listLas)))){
     Rprintf("error in input filename structure.\n");
-    error(1);
+    error("1");
   }
 
   if((ipoo=fopen(namen,"r"))==NULL){
     Rprintf("Error opening list file \"%s\"\n",namen);
-    error(1);
+    error("1");
   }
 
 
@@ -615,7 +615,7 @@ listLas *readLasList(char *namen)
   while(fgets(line,400,ipoo)!=NULL)if(strncasecmp(line,"#",1))lasList->nFiles++;
   if(lasList->nFiles==0){
     Rprintf("No files in %s\n",namen);
-    error(1);
+    error("1");
   }
   lasList->nameList=chChalloc(lasList->nFiles,"name list",0);
   lasList->gbicNamen=chChalloc(lasList->nFiles,"GBIC file list",0);
@@ -632,7 +632,7 @@ listLas *readLasList(char *namen)
 
   if(fseek(ipoo,(long)0,SEEK_SET)){ /*rewind to start of file*/
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
 
   /*read*/
@@ -699,7 +699,7 @@ double **readCoordList(int nFiles,char **nameList,char *coordNamen)
 
   if((ipoo=fopen(coordNamen,"r"))==NULL){
     Rprintf("Error opening coords input file \"%s\"\n",coordNamen);
-    error(1);
+    error("1");
   }
   coords=dDalloc(nFiles,"coords",0);
   for(i=0;i<nFiles;i++)coords[i]=dalloc(3,"coords",i+1);

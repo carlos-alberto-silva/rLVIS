@@ -25,7 +25,7 @@ void readGeotiff(geot *geotiff,char *namen,char readData)
 
   if((tiffIn=XTIFFOpen(namen,"r"))==NULL){
     Rprintf("Damn, no %s\n",namen);
-    error(1);
+    error("1");
   }
   geotiff->tiepoints=dalloc(6,"",0);
   geotiff->scale=dalloc(3,"",0);
@@ -61,7 +61,7 @@ void readGeotiff(geot *geotiff,char *namen,char readData)
       for(i=0;i<geotiff->nY;i++){                  /*looping along the lattitude*/
         if(TIFFReadScanline(tiffIn,&(geotiff->image[i*geotiff->nX]),i,1)!=1){
           Rprintf("Error reading scan line %d from tiff image\n",i);
-          error(1);
+          error("1");
         }
       }
     }else if(type==3){ /*float*/
@@ -72,7 +72,7 @@ void readGeotiff(geot *geotiff,char *namen,char readData)
           for(i=0;i<geotiff->nY;i++){                  /*looping along the lattitude*/
             if(TIFFReadScanline(tiffIn,&(geotiff->fImage[i*geotiff->nX]),i,1)!=1){
               Rprintf("Error reading scan line %d from tiff image\n",i);
-              error(1);
+              error("1");
             }
           }
         }else{ /*read tiled data*/
@@ -97,16 +97,16 @@ void readGeotiff(geot *geotiff,char *namen,char readData)
         for(i=0;i<geotiff->nY;i++){                  /*looping along the lattitude*/
           if(TIFFReadScanline(tiffIn,&(geotiff->dImage[i*geotiff->nX]),i,1)!=1){
             Rprintf("Error reading scan line %d from tiff image\n",i);
-            error(1);
+            error("1");
           }
         }
       }else{
         Rprintf("What do you think you're doing!?!\n");
-        error(1);
+        error("1");
       }
     }else{
       Rprintf("Cannot handle type %d\n",type);
-      error(1);
+      error("1");
     }
   }/*read data question*/
 

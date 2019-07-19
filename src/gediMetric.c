@@ -214,15 +214,15 @@ control* createControl(const char *input, const char *output) {
   /*allocate structures*/
   if(!(dimage=(control *)calloc(1,sizeof(control)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
   if(!(dimage->gediIO.den=(denPar *)calloc(1,sizeof(denPar)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
   if(!(dimage->gediIO.gFit=(denPar *)calloc(1,sizeof(denPar)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
 
 
@@ -552,7 +552,7 @@ int main(int argc,char **argv)
   /*allocate metric array*/
   if(!(metric=(metStruct *)calloc(1,sizeof(metStruct)))){
     Rprintf("error metric structure allocation.\n");
-    error(1);
+    error("1");
   }
 
   /*loop over files*/
@@ -886,7 +886,7 @@ void writeResults(dataStruct *data,control *dimage,metStruct *metric,int numb,fl
     sprintf(namen,"%s.gauss.txt",dimage->outRoot);
     if((dimage->opooGauss=fopen(namen,"w"))==NULL){
       Rprintf("Error opening output file %s\n",namen);
-      error(1);
+      error("1");
     }
     fprintf(dimage->opooGauss,"# 1 wave ID, 2 nGauss");
     for(i=0;i<dimage->maxGauss;i++)fprintf(dimage->opooGauss,", %d gauss %d mu, %d A, %d sig",3*i+3,i+1,3*i+4,3*i+5);
@@ -896,7 +896,7 @@ void writeResults(dataStruct *data,control *dimage,metStruct *metric,int numb,fl
     sprintf(namen,"%s.metric.txt",dimage->outRoot);
     if((dimage->opooMet=fopen(namen,"w"))==NULL){
       Rprintf("Error opening output file %s\n",namen);
-      error(1);
+      error("1");
     }
     fprintf(dimage->opooMet,"# 1 wave ID, 2 true ground, 3 true top, 4 ground slope, 5 ALS cover, 6 gHeight, 7 maxGround, 8 inflGround, 9 signal top, 10 signal bottom, 11 cover, 12 leading edge ext, 13 trailing edge extent");
     for(i=0;i<metric->nRH;i++)fprintf(dimage->opooMet,", %d rhGauss %g",14+i,(float)i*dimage->rhRes);
@@ -986,7 +986,7 @@ void writeResults(dataStruct *data,control *dimage,metStruct *metric,int numb,fl
     else              sprintf(waveNamen,"%s.%s.fit",dimage->outRoot,data->waveID);
     if((opoo=fopen(waveNamen,"w"))==NULL){
       Rprintf("Error opening output file %s\n",waveNamen);
-      error(1);
+      error("1");
     }
 
     fprintf(opoo,"# 1 elevation, 2 noised, 3 denoised, 4 processed, 5 original, 6 ground, 7 canopy");
@@ -1406,7 +1406,7 @@ double bayesGround(float *wave,int nBins,control *dimage,metStruct *metric,doubl
   metric->nBgr=6;
   if(!(metric->bGr=(bGround *)calloc(metric->nBgr,sizeof(bGround)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
 
   /*for first estimate, last return above noise*/
@@ -1433,7 +1433,7 @@ double bayesGround(float *wave,int nBins,control *dimage,metStruct *metric,doubl
   /*for others, make an array*/
   if(!(den=(denPar *)calloc(metric->nBgr,sizeof(denPar)))){
     Rprintf("error waveStruct allocation.\n");
-    error(1);
+    error("1");
   }
   for(i=1;i<metric->nBgr;i++){
     setDenoiseDefault(&(den[i]));
@@ -1791,7 +1791,7 @@ lvisL2struct *readLvisL2(char *namen)
   /*allocate structures*/
   if(!(lvisL2=(lvisL2struct *)calloc(1,sizeof(lvisL2struct)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
   lvisL2->numb=0;
   lvisL2->lfid=NULL;
@@ -1801,7 +1801,7 @@ lvisL2struct *readLvisL2(char *namen)
   /*open file*/
   if((ipoo=fopen(namen,"r"))==NULL){
     Rprintf("Error opening input file %s\n",namen);
-    error(1);
+    error("1");
   }
 
   /*count number of lines*/
@@ -1810,18 +1810,18 @@ lvisL2struct *readLvisL2(char *namen)
   /*allocate arrays*/
   if(!(lvisL2->lfid=(uint32_t *)calloc(lvisL2->numb,sizeof(uint32_t)))){
     Rprintf("error in L2 lfid allocation.\n");
-    error(1);
+    error("1");
   }
   if(!(lvisL2->shotN=(uint32_t *)calloc(lvisL2->numb,sizeof(uint32_t)))){
     Rprintf("error in L2 shotN allocation.\n");
-    error(1);
+    error("1");
   }
   lvisL2->zG=falloc((uint64_t)lvisL2->numb,"L2 zG",0);
 
   /*rewind to start of file*/
   if(fseek(ipoo,(long)0,SEEK_SET)){
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
 
   /*read data*/
@@ -1868,7 +1868,7 @@ lvisL2struct *readLvisL2(char *namen)
 void photonCountCloud(float *denoised,dataStruct *data,photonStruct *photonCount,char *outRoot,int numb,denPar *den,noisePar *noise)
 {
   Rprintf("This has been compiled without photon counting functions\n");
-  error(1);
+  error("1");
   return;
 }/*photonCountCloud*/
 #endif
@@ -1888,15 +1888,15 @@ control *readCommands(int argc,char **argv)
   /*allocate structures*/
   if(!(dimage=(control *)calloc(1,sizeof(control)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
   if(!(dimage->gediIO.den=(denPar *)calloc(1,sizeof(denPar)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
   if(!(dimage->gediIO.gFit=(denPar *)calloc(1,sizeof(denPar)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
 
 
@@ -2215,10 +2215,10 @@ control *readCommands(int argc,char **argv)
       #endif
       }else if(!strncasecmp(argv[i],"-help",5)){
         writeHelp();
-        error(1);
+        error("1");
       }else{
         Rprintf("%s: unknown argument on command line: %s\nTry gediRat -help\n",argv[0],argv[i]);
-        error(1);
+        error("1");
       }
     }
   }
@@ -2227,7 +2227,7 @@ control *readCommands(int argc,char **argv)
   if(dimage->gediIO.den->preMatchF||dimage->gediIO.den->preMatchF||dimage->gediIO.den->deconMeth>=0)readPulse(dimage->gediIO.den);
   if((!dimage->gediIO.ground)&&(dimage->noise.missGround)){
     Rprintf("Noise option conflict. Cannot use missGround without ground\n");
-    error(1);
+    error("1");
   }
 
   return(dimage);

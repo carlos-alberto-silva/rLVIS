@@ -55,12 +55,12 @@ void drawTiff(char *namen,double *geoL,int *geoI,double res,unsigned char *image
   tif=XTIFFOpen(namen,"w");
   if(!tif){
     Rprintf("Error opening %s\n",namen);
-    error(1);
+    error("1");
   }
   gtif=GTIFNew(tif);
   if(!gtif){
     Rprintf("failed in GTIFNew\n");
-    error(1);
+    error("1");
   }
   SetUpTIFFDirectory(tif,nX,nY,geoI[0],geoI[1],geoL[0],geoL[1],res,scale);
   SetUpGeoKeys(gtif,epsg);
@@ -177,12 +177,12 @@ void drawTiffFlo(char *outRoot,double *geoL,int *geoI,double res,float *image,in
   tif=XTIFFOpen(namen,"w");
   if(!tif){
     Rprintf("Error opening %s\n",namen);
-    error(1);
+    error("1");
   }
   gtif=GTIFNew(tif);
   if(!gtif){
     Rprintf("failed in GTIFNew\n");
-    error(1);
+    error("1");
   }
   SetUpTIFFDirectoryFlo(tif,nX,nY,geoI[0],geoI[1],geoL[0],geoL[1],res,scale);
   SetUpGeoKeys(gtif,epsg);

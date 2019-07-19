@@ -49,15 +49,15 @@ void checkLVISsizes()
 {
   if(sizeof(float)!=4){
     Rprintf("Size error\n");
-    error(1);
+    error("1");
   }
   if(sizeof(double)!=8){
     Rprintf("Size error\n");
-    error(1);
+    error("1");
   }
   if(sizeof(unsigned char)!=1){
     Rprintf("Size error\n");
-    error(1);
+    error("1");
   }
   return;
 }/*checkLVISsizes*/
@@ -79,18 +79,18 @@ lvisLGWdata *readLVISlgw(char *namen,lvisLGWstruct *lvis)
   /*open file*/
   if((ipoo=fopen(namen,"rb"))==NULL){
     Rprintf("Error opening input file %s\n",namen);
-    error(1);
+    error("1");
   }
 
   /*read file size*/
   if(fseek(ipoo,(long)0,SEEK_END)){
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
   len=ftell(ipoo);
   if(fseek(ipoo,(long)0,SEEK_SET)){
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
 
 
@@ -99,7 +99,7 @@ lvisLGWdata *readLVISlgw(char *namen,lvisLGWstruct *lvis)
   /*read data*/
   if(fread(&(buffer[0]),sizeof(char),len,ipoo)!=len){
     Rprintf("error reading data\n");
-    error(1);
+    error("1");
   }
   if(ipoo){
     fclose(ipoo);
@@ -111,7 +111,7 @@ lvisLGWdata *readLVISlgw(char *namen,lvisLGWstruct *lvis)
 
   if(!(data=(lvisLGWdata *)calloc(lvis->nWaves,sizeof(lvisLGWdata)))){
     Rprintf("error data structure allocation.\n");
-    error(1);
+    error("1");
   }
 
   /*copy data*/
@@ -290,7 +290,7 @@ lvisHDF *readLVIShdf(char *inNamen)
   /*allocate structure*/
   if(!(lvis=(lvisHDF *)calloc(1,sizeof(lvisHDF)))){
     Rprintf("error in LVIS structure allocation.\n");
-    error(1);
+    error("1");
   }
 
   /*set to NULL to start with*/
@@ -351,7 +351,7 @@ lvisHDF *readLVIShdf(char *inNamen)
   /*close file*/
   if(H5Fclose(file)){
     Rprintf("Issue closing file\n");
-    error(1);
+    error("1");
   }
 
   return(lvis);
@@ -365,7 +365,7 @@ void checkNumber(int newNumb,int oldNumb,char *label)
 {
   if(newNumb!=oldNumb){
     Rprintf("Number mismatch %d %d for %s\n",newNumb,oldNumb,label);
-    error(1);
+    error("1");
   }
   return;
 }/*checkNumber*/
@@ -389,12 +389,12 @@ uint16_t **read2dUint16HDF5(hid_t file,char *label,int *nBins,int *nWaves)
   ndims=H5Sget_simple_extent_ndims(space);
   if(!(dims=(hsize_t *)calloc(ndims,sizeof(hsize_t)))){
     Rprintf("error in float buffer allocation.\n");
-    error(1);
+    error("1");
   }
 
   if(H5Sget_simple_extent_dims(space,dims,NULL)!=ndims){
     Rprintf("Error\n");
-    error(1);
+    error("1");
   }
   (*nWaves)=(int)dims[0];
   (*nBins)=(int)dims[1];
@@ -409,17 +409,17 @@ uint16_t **read2dUint16HDF5(hid_t file,char *label,int *nBins,int *nWaves)
   /*read data*/
   if(H5Dread(dset,H5T_NATIVE_USHORT,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad[0])){
     Rprintf("Error reading data %s\n",label);
-    error(1);
+    error("1");
   }
 
   /*close dataset*/
   if(H5Dclose(dset)){
     Rprintf("Error closing data %s\n",label);
-    error(1);
+    error("1");
   }
   if(H5Sclose(space)){
     Rprintf("Error closing space %s\n",label);
-    error(1);
+    error("1");
   }
 
   TIDY(dims);
@@ -446,12 +446,12 @@ float *read15dFloatHDF5(hid_t file,char *label,int *nWaves,int *nBins)
   ndims=H5Sget_simple_extent_ndims(space);
   if(!(dims=(hsize_t *)calloc(ndims,sizeof(hsize_t)))){
     Rprintf("error in float buffer allocation.\n");
-    error(1);
+    error("1");
   }
 
   if(H5Sget_simple_extent_dims(space,dims,NULL)!=ndims){
     Rprintf("Error\n");
-    error(1);
+    error("1");
   }
   (*nWaves)=(int)dims[0];
   (*nBins)=(int)dims[1];
@@ -462,17 +462,17 @@ float *read15dFloatHDF5(hid_t file,char *label,int *nWaves,int *nBins)
   /*read data*/
   if(H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad)){
     Rprintf("Error reading data %s\n",label);
-    error(1);
+    error("1");
   }
 
   /*close dataset*/
   if(H5Dclose(dset)){
     Rprintf("Error closing data %s\n",label);
-    error(1);
+    error("1");
   }
   if(H5Sclose(space)){
     Rprintf("Error closing space %s\n",label);
-    error(1);
+    error("1");
   }
 
   TIDY(dims);
@@ -500,12 +500,12 @@ char *read15dCharHDF5(hid_t file,char *label,int *nWaves,int *nBins)
   ndims=H5Sget_simple_extent_ndims(space);
   if(!(dims=(hsize_t *)calloc(ndims,sizeof(hsize_t)))){
     Rprintf("error in float buffer allocation.\n");
-    error(1);
+    error("1");
   }
   
   if(H5Sget_simple_extent_dims(space,dims,NULL)!=ndims){
     Rprintf("Error\n");
-    error(1);
+    error("1");
   }
   (*nWaves)=(int)dims[0];
   (*nBins)=(int)dims[1];
@@ -516,17 +516,17 @@ char *read15dCharHDF5(hid_t file,char *label,int *nWaves,int *nBins)
   /*read data*/
   if(H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad)){
     Rprintf("Error reading data %s\n",label);
-    error(1);
+    error("1");
   }
   
   /*close dataset*/
   if(H5Dclose(dset)){
     Rprintf("Error closing data %s\n",label);
-    error(1);
+    error("1");
   }
   if(H5Sclose(space)){
     Rprintf("Error closing space %s\n",label);
-    error(1);
+    error("1");
   }
   
   TIDY(dims);
@@ -551,17 +551,17 @@ uint16_t *read1dUint16HDF5(hid_t file,char *varName,int *nBins)
   ndims=H5Sget_simple_extent_dims(space,dims,NULL);
   if(ndims>1){
     Rprintf("Wrong number of dimensions %d\n",ndims);
-    error(1);
+    error("1");
   }
   *nBins=dims[0];
   if(!(jimlad=(uint16_t *)calloc(*nBins,sizeof(uint16_t)))){
     Rprintf("error in float buffer allocation.\n");
-    error(1);
+    error("1");
   }
   status=H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad);
   if(status){
     Rprintf("Data reading error %d\n",status);
-    error(1);
+    error("1");
   }
   status=H5Dclose(dset);
   status=H5Sclose(space);
@@ -586,17 +586,17 @@ uint32_t *read1dUint32HDF5(hid_t file,char *varName,int *nBins)
   ndims=H5Sget_simple_extent_dims(space,dims,NULL);
   if(ndims>1){
     Rprintf("Wrong number of dimensions %d\n",ndims);
-    error(1);
+    error("1");
   }
   *nBins=dims[0];
   if(!(jimlad=(uint32_t *)calloc(*nBins,sizeof(uint32_t)))){
     Rprintf("error in float buffer allocation.\n");
-    error(1);
+    error("1");
   }
   status=H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad);
   if(status){
     Rprintf("Data reading error %d\n",status);
-    error(1);
+    error("1");
   }
   status=H5Dclose(dset);
   status=H5Sclose(space);
@@ -621,17 +621,17 @@ uint64_t *read1dUint64HDF5(hid_t file,char *varName,int *nBins)
   ndims=H5Sget_simple_extent_dims(space,dims,NULL);
   if(ndims>1){
     Rprintf("Wrong number of dimensions %d\n",ndims);
-    error(1);
+    error("1");
   }
   *nBins=dims[0];
   if(!(jimlad=(uint64_t *)calloc(*nBins,sizeof(uint64_t)))){
     Rprintf("error in float buffer allocation.\n");
-    error(1);
+    error("1");
   }
   status=H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad);
   if(status){
     Rprintf("Data reading error %d\n",status);
-    error(1);
+    error("1");
   }
   status=H5Dclose(dset);
   status=H5Sclose(space);
@@ -656,14 +656,14 @@ int *read1dIntHDF5(hid_t file,char *varName,int *nBins)
   ndims=H5Sget_simple_extent_dims(space,dims,NULL);
   if(ndims>1){
     Rprintf("Wrong number of dimensions %d\n",ndims);
-    error(1);
+    error("1");
   }
   *nBins=dims[0];
   jimlad=ialloc(dims[0],"",0);
   status=H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad);
   if(status){
     Rprintf("Data reading error %d\n",status);
-    error(1);
+    error("1");
   }
   status=H5Dclose(dset);
   status=H5Sclose(space);
@@ -688,14 +688,14 @@ float *read1dFloatHDF5(hid_t file,char *varName,int *nBins)
   ndims=H5Sget_simple_extent_dims(space,dims,NULL);
   if(ndims>1){
     Rprintf("Wrong number of dimensions %d\n",ndims);
-    error(1);
+    error("1");
   }
   *nBins=dims[0];
   jimlad=falloc((uint64_t)dims[0],varName,0);
   status=H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad);
   if(status){
     Rprintf("Data reading error %d\n",status);
-    error(1);
+    error("1");
   }
   status=H5Dclose(dset);
   status=H5Sclose(space);
@@ -720,14 +720,14 @@ double *read1dDoubleHDF5(hid_t file,char *varName,int *nBins)
   ndims=H5Sget_simple_extent_dims(space,dims,NULL);
   if(ndims>1){
     Rprintf("Wrong number of dimensions %d\n",ndims);
-    error(1);
+    error("1");
   }
   *nBins=dims[0];
   jimlad=dalloc(dims[0],"",0);
   status=H5Dread(dset,filetype,H5S_ALL,H5S_ALL,H5P_DEFAULT,jimlad);
   if(status){
     Rprintf("Data reading error %d\n",status);
-    error(1);
+    error("1");
   }
   status=H5Dclose(dset);
   status=H5Sclose(space);
@@ -759,14 +759,14 @@ void write1dUint32HDF5(hid_t file,char *varName,uint32_t *data,int nWaves)
   dset=H5Dcreate2(file,varName,datatype,dataspace,lcpl_id,dcpl_id,dapl_id);
   if(dset<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*write data*/
   status=H5Dwrite(dset,datatype,H5S_ALL,H5S_ALL,H5P_DEFAULT,(void *)data);
   if(status<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*close data*/
@@ -803,14 +803,14 @@ void write1dDoubleHDF5(hid_t file,char *varName,double *data,int nWaves)
   dset=H5Dcreate2(file,varName,datatype,dataspace,lcpl_id,dcpl_id,dapl_id);
   if(dset<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*write data*/
   status=H5Dwrite(dset,datatype,H5S_ALL,H5S_ALL,H5P_DEFAULT,(void *)data);
   if(status<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*close data*/
@@ -848,14 +848,14 @@ void write2dCharHDF5(hid_t file,char *varName,char *data,int nWaves,int nBins)
   dset=H5Dcreate2(file,varName,datatype,dataspace,lcpl_id,dcpl_id,dapl_id);
   if(dset<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*write data*/
   status=H5Dwrite(dset,datatype,H5S_ALL,H5S_ALL,H5P_DEFAULT,(void *)data);
   if(status<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*close data*/
@@ -892,14 +892,14 @@ void write2dUint16HDF5(hid_t file,char *varName,uint16_t *data,int nWaves,int nB
   dset=H5Dcreate2(file,varName,datatype,dataspace,lcpl_id,dcpl_id,dapl_id);
   if(dset<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*write data*/
   status=H5Dwrite(dset,datatype,H5S_ALL,H5S_ALL,H5P_DEFAULT,(void *)data);
   if(status<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*close data*/
@@ -936,14 +936,14 @@ void write2dFloatHDF5(hid_t file,char *varName,float *data,int nWaves,int nBins)
   dset=H5Dcreate2(file,varName,datatype,dataspace,lcpl_id,dcpl_id,dapl_id);
   if(dset<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*write data*/
   status=H5Dwrite(dset,datatype,H5S_ALL,H5S_ALL,H5P_DEFAULT,(void *)data);
   if(status<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*close data*/
@@ -979,14 +979,14 @@ void write1dFloatHDF5(hid_t file,char *varName,float *data,int nWaves)
   dset=H5Dcreate2(file,varName,datatype,dataspace,lcpl_id,dcpl_id,dapl_id);
   if(dset<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*write data*/
   status=H5Dwrite(dset,datatype,H5S_ALL,H5S_ALL,H5P_DEFAULT,(void *)data);
   if(status<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*close data*/
@@ -1022,14 +1022,14 @@ void write1dIntHDF5(hid_t file,char *varName,int *data,int nWaves)
   dset=H5Dcreate2(file,varName,datatype,dataspace,lcpl_id,dcpl_id,dapl_id);
   if(dset<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*write data*/
   status=H5Dwrite(dset,datatype,H5S_ALL,H5S_ALL,H5P_DEFAULT,(void *)data);
   if(status<0){
     Rprintf("Error writing %s\n",varName);
-    error(1);
+    error("1");
   }
 
   /*close data*/

@@ -58,11 +58,11 @@ demStruct *readAscDEM(char *namen,double minX,double minY,double maxX,double max
 
   if(!(dem=(demStruct *)calloc(1,sizeof(demStruct)))){
     Rprintf("error demStruct allocation.\n");
-    error(1);
+    error("1");
   }
   if((ipoo=fopen(namen,"r"))==NULL){
     Rprintf("Error opening dem file %s\n",namen);
-    error(1);
+    error("1");
   }
 
   lineN=0;

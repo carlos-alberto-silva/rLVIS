@@ -113,7 +113,7 @@ int main(int argc,char **argv)
   /*loop over las files and read*/
   if(!(data=(pCloudStruct **)calloc(dimage->gediIO.nFiles,sizeof(pCloudStruct *)))){
     Rprintf("error waveStruct allocation.\n");
-    error(1);
+    error("1");
   }
   for(i=0;i<dimage->gediIO.nFiles;i++){
     /*report progress if reading all data here*/
@@ -515,7 +515,7 @@ void writeGEDIwave(control *dimage,waveStruct *waves,int numb)
 
   if((opoo=fopen(dimage->waveNamen,"w"))==NULL){
     Rprintf("Error opening output file %s\n",dimage->waveNamen);
-    error(1);
+    error("1");
   }
 
   /*write header*/
@@ -566,13 +566,13 @@ pCloudStruct *readAsciiData(char *inNamen)
 
   if(!(data=(pCloudStruct *)calloc(1,sizeof(pCloudStruct)))){
     Rprintf("error pCloudStruct allocation.\n");
-    error(1);
+    error("1");
   }
 
 
   if((ipoo=fopen(inNamen,"r"))==NULL){
     Rprintf("Error opening input file %s\n",inNamen);
-    error(1);
+    error("1");
   }
 
   /*count number of points*/
@@ -589,7 +589,7 @@ pCloudStruct *readAsciiData(char *inNamen)
   /*rewind to start of file*/
   if(fseek(ipoo,(long)0,SEEK_SET)){ 
     Rprintf("fseek error\n");
-    error(1);
+    error("1");
   }
 
   /*read data*/
@@ -629,7 +629,7 @@ gediHDF *setUpHDF(control *dimage)
   /*allocate space*/
   if(!(hdfData=(gediHDF *)calloc(1,sizeof(gediHDF)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
 
   /*header*/
@@ -696,7 +696,7 @@ control *readCommands(int argc,char **argv)
 
   if(!(dimage=(control *)calloc(1,sizeof(control)))){
     Rprintf("error control allocation.\n");
-    error(1);
+    error("1");
   }
 
   dimage->gediIO.nFiles=1;
@@ -898,10 +898,10 @@ control *readCommands(int argc,char **argv)
         dimage->gediRat.decimate=atof(argv[++i]);
       }else if(!strncasecmp(argv[i],"-help",5)){
         writeGediRatHelpMessage();
-        error(1);
+        error("1");
       }else{
         Rprintf("%s: unknown argument on command line: %s\nTry gediRat -help\n",argv[0],argv[i]);
-        error(1);
+        error("1");
       }
     }
   }/*command parser*/

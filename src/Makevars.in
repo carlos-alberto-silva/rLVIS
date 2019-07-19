@@ -1,4 +1,9 @@
 # Makefile for GEDI simulator tools
+PKG_CFLAGS=@PKG_CFLAGS@
+PKG_LIBS=@PKG_LIBS@
+GSL_CFLAGS = @GSL_CFLAGS@
+GSL_LIBS   = @GSL_LIBS@
+
 HANCOCKTOOLS_ROOT = tools
 GEDIRAT_ROOT = gedisimulator
 LIBCLIDAR_ROOT = libclidar
@@ -13,10 +18,10 @@ BIN=
 ARCH=$(PROCESSOR_ARCHITECTURE)
 
 HDF5_LIB = ../windows/include/
-LIBS += -lgsl -lgslcblas -ltiff -L${GSL_ROOT}
+LIBS += $(GSL_LIBS) -ltiff -L${GSL_ROOT}
 PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
 -I${LIBCLIDAR_ROOT} -I${HDF5_LIB} -I. -I../windows/hdf5-1.8.16/include \
--I../windows/gsl-2.4/include -I./cmpfit-1.2 -I../windows/libgeotiff-1.4.3 \
+$(GSL_CFLAGS) -I./cmpfit-1.2 -I../windows/libgeotiff-1.4.3 \
 -I../windows/libgeotiff-1.4.3/libxtiff -I../windows/libtiff-4.0.9/include \
 -I$(RWINLIB)/include/gdal
 
@@ -54,9 +59,12 @@ PKG_LIBS += \
 	-lodbc32 -lodbccp32 -liconv -lpsapi -lws2_32 -lcrypt32 -lwldap32 -lsecur32 -lgdi32 \
 	-lgsl -lgslcblas
 
-all: clean
+all: clean deps $(OBJECTS) $(SHLIB)
+
+deps: 
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/deps.R"
 
 clean:
 	rm -f $(SHLIB) $(OBJECTS)
 
-.PHONY: clean winlibs
+.PHONY: clean deps
