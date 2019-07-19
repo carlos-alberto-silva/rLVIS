@@ -346,7 +346,7 @@ lvisHDF *readLVIShdf(char *inNamen)
   /*if there is a pulse*/
   /*lvis->pulse=read2dUint16HDF5(file,"TXWAVE",&lvis->pBins,&nWaves);
   checkNumber(nWaves,lvis->nWaves,"TXWAVE");*/
-  Rprintf("Note that txwaves are not currently read. Check required\n");
+  // Rprintf("Note that txwaves are not currently read. Check required\n");
 
   /*close file*/
   if(H5Fclose(file)){
