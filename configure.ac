@@ -78,7 +78,8 @@ if test -z "${H5CC}"; then
         - OS X using Homebrew: 'brew install homebrew/science/hdf5'
         - RPM-based (e.g Fedora): 'sudo yum install hdf5-devel'])
 fi
-HDF5_LIBS=`${H5CC} -show | ${GREP} -o "\-L[^[[:space:]]]\+\|\-l[a-zA-Z0-9]\+ " | tr "\n" " " | sed -e 's/  / /g'`
+HDF5_LIBS=`${H5CC} -show | perl -pe "s/.*(-L.*? ).*/\1/g"`
+HDF5_LIBS+=`${H5CC} -show | ${GREP} -o "\-l[[a-zA-Z0-9]]\+ " | tr "\n" " " | sed -e 's/  / /g'`
 HDF5_LIBS+="-lhdf5 -lhdf5_hl"
 
 echo 'int main() { return; }' > myconftest.c
