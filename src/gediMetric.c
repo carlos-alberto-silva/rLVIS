@@ -376,8 +376,9 @@ SEXP processFloWave2(SEXP input, SEXP output) {
     if((i%dimage->gediIO.nMessages)==0) Rprintf("Wave %d of %d\n",i+1,dimage->gediIO.nFiles);
     /*read waveform*/
     data = unpackHDFlvis(dimage->gediIO.inList[0],&dimage->hdfLvis,&dimage->gediIO,i);
-    return (ScalarInteger(1));
     if(dimage->readL2)setL2ground(data,i,dimage);
+    Rprintf("unpacked successfuly!");
+    return(ScalarInteger(1));
 
     return(ScalarInteger(1));
     /*check bounds if needed*/
