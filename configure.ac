@@ -43,7 +43,6 @@ else
 fi
 
 
-
 ##################
 ## GDAL
 ##################
@@ -93,5 +92,7 @@ AC_SUBST(GSL_CFLAGS)
 AC_SUBST(GSL_LIBS)
 AC_SUBST(HDF5_CFLAGS)
 AC_SUBST(HDF5_LIBS)
+AC_SUBST(GDAL_CFLAGS)
+AC_SUBST(GDAL_LIBS)
 
 AC_OUTPUT(src/Makevars)
