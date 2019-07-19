@@ -377,30 +377,36 @@ SEXP processFloWave2(SEXP input, SEXP output) {
     /*read waveform*/
     data = unpackHDFlvis(dimage->gediIO.inList[0],&dimage->hdfLvis,&dimage->gediIO,i);
     if(dimage->readL2)setL2ground(data,i,dimage);
-    Rprintf("unpacked successfuly!");
-    return(ScalarInteger(1));
+    Rprintf("unpacked successfuly!\n");
 
-    return(ScalarInteger(1));
     /*check bounds if needed*/
     if(dimage->useBounds)checkWaveformBounds(data,dimage);
+    Rprintf("Checled waveform bounds!\n");
 
     /*is the data usable*/
     if(data->usable){
+      Rprintf("Data is usable!!!\n");
+
       /*denoise and change pulse if needed*/
       if(dimage->renoiseWave)modifyTruth(data,&dimage->noise);
+      Rprintf("Checled waveform bounds!\n");
 
       /*determine truths before noising*/
       determineTruth(data,dimage);
+      Rprintf("Truth determinated!\n");
 
       /*add noise if needed*/
       addNoise(data,&dimage->noise,dimage->gediIO.fSigma,dimage->gediIO.pSigma,dimage->gediIO.res,rhoC,rhoG);
+      Rprintf("Noise added!\n");
 
       /*process waveform*/
       /*denoise*/
       denoised=processFloWave(data->noised,data->nBins,dimage->gediIO.den,1.0);
+      Rprintf("Denoised!\n");
 
       /*are we in GEDI mode?*/
       if(!dimage->ice2){
+        Rprintf("Ice2!\n");
         /*Gaussian fit*/
         if(dimage->noRHgauss==0)processed=processFloWave(denoised,data->nBins,dimage->gediIO.gFit,1.0);
 
@@ -413,7 +419,8 @@ SEXP processFloWave2(SEXP input, SEXP output) {
         /*write results*/
         if(dimage->readBinLVIS||dimage->readHDFlvis||dimage->readHDFgedi)writeResults(data,dimage,metric,i,denoised,processed,dimage->gediIO.inList[0]);
         else                                                             writeResults(data,dimage,metric,i,denoised,processed,dimage->gediIO.inList[i]);
-      }else{  /*ICESat-2 mode*/
+      } else{  /*ICESat-2 mode*/
+        Rprintf("ICESat-2 mode!\n");
         photonCountCloud(denoised,data,&dimage->photonCount,dimage->outRoot,i,dimage->gediIO.den,&dimage->noise);
       }/*operation mode switch*/
     }/*is the data usable*/
