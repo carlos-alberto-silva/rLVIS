@@ -39,7 +39,7 @@ else
   	The required gsl library files can be installed as follows:
   	    - Debian-based: 'sudo apt-get install libgsl-dev'
         - OS X using Homebrew: 'brew install gsl'
-        - RPM-based (e.g Fedora): 'sudo yum install gsl-devel']))])
+        - RPM-based (e.g Fedora): 'sudo yum install gsl-devel'])
 fi
 
 
