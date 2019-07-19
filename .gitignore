@@ -5,3 +5,8 @@
 .vscode
 windows
 cmpfit
+*.o
+*.exe
+*.dll
+dev/
+**/.hg/

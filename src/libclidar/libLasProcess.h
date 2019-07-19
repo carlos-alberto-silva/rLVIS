@@ -81,8 +81,68 @@ typedef struct{
   char gaussFilt;    /*switch*/
   float hardWidth;   /*maxWidth of hard feature*/
   float hardTol;     /*tolerance to scale width by*/
-} denPar;
+}denPar;
 
 
+/*##################################################*/
+/*global structure to save reallocating smoothing pulse*/
 
+typedef struct{
+  int nPulses;
+  int *nBins;
+  float *res;
+  float *sWidth;
+  float **pulse;
+}smoothPulse;
+
+
+/*###################################################*/
+/*ground data structure*/
+
+typedef struct{
+  uint32_t nPoints;
+  double *xUse;
+  double *yUse;
+  double *zUse;
+  double *par;
+  int nPoly[2];
+}groundDstruct;
+
+
+/*#####################################*/
+/*canopy bounds*/
+
+typedef struct{
+  float *canMin;     /*minimum canopy height*/
+  float *canMax;     /*maximum canopy height*/
+  int cNx;           /*number of x elements*/
+  int cNy;           /*number of y elements*/
+  float cRes;        /*canopy bounds resolution*/
+  double cUbound[4]; /*x, y bounds*/
+}canBstruct;
+
+
+/*#############################################*/
+/*common function definitions*/
+
+float *smooth(float,int,float *,float);
+
+/*#############################################*/
+/*functions*/
+
+float *processWave(unsigned char *,int,denPar *,float);
 float *processFloWave(float *,int,denPar *,float);
+char checkWaveform(float *,uint32_t);
+float *findRH(float *,double *,int,double,float,int *);
+float foliageHeightDiversity(float *,int);
+float foliageHeightDiversityHist(float *,int,float);
+float *waveLmoments(float *,int,float,int);
+float niMetric(float *,double *,int,float,double,float);
+float determineGaussSep(float,float);
+float *matchedFilter(float *,int,denPar *,float);
+float *subtractGroundFromCan(float *,float *,int);
+float *subtractGaussFromCan(float *,int,float,float,float,double *);
+
+/*the end*/
+/*#############################################*/
+
