@@ -1,4 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
+LDFLAGS="$LDFLAGS -L /usr/lib/x86_64-linux-gnu/hdf5/serial"
+
 
 # The version set here will propagate to other files from here
 AC_INIT([rLVIS], 0.0.1)
@@ -19,7 +21,7 @@ else
   AC_MSG_ERROR([gsl-config not found, is GSL installed?])
 fi
 
-AC_CHECK_LIB(hdf5, H5Dcreate2, [],
+AC_CHECK_LIB(hdf5, nc4_create_file, [],
       AC_MSG_ERROR([Static hdf5 library not found.
       Please install the hdf5 library with C++ interface enabled (--enable-cxx=yes).
   	The required HDF5 library files can be installed as follows:
