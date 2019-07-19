@@ -50,17 +50,6 @@ COMPILED_BY ?= gcc-4.6.3
 RWINLIB = ../windows/gdal2-$(VERSION)
 
 
-PKG_LIBS += \
-	-L$(RWINLIB)/lib$(R_ARCH) \
-	-L../windows/gsl-2.4/lib$(R_ARCH) \
-	-lgdal -lsqlite3 -lspatialite -lproj -lgeos_c -lgeos  \
-	-ljson-c -lnetcdf -lmariadbclient -lpq -lintl -lwebp -lcurl -lssh2 -lssl -lcrypto \
-	-lkea -lhdf5_cpp -lhdf5_hl -lhdf5 -lexpat -lfreexl -lcfitsio \
-	-lmfhdf -ldf -lxdr \
-	-lopenjp2 -ljasper -lpng16 -ljpeg -ltiff -lgeotiff -lgif -lxml2 -llzma -lszip -lz \
-	-lodbc32 -lodbccp32 -liconv -lpsapi -lws2_32 -lcrypt32 -lwldap32 -lsecur32 -lgdi32 \
-	-lgsl -lgslcblas
-
 all: clean deps $(OBJECTS) $(SHLIB)
 
 deps: 
