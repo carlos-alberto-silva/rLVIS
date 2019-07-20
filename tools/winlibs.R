@@ -17,9 +17,9 @@ if(!file.exists("../windows/gsl-2.4/include/gsl/gsl_blas.h")){
   unlink("lib.zip")
 }
 
-if(!file.exists("../windows/hdf5-1.8.16/include/hdf5.h")){
+if(!file.exists("../windows/mingw64-libhdf5-dev-1.8.20/include/hdf5.h")){
   cat("Installing HDF5...\n")
-  download.file("https://github.com/rwinlib/hdf5/archive/v1.8.16.zip", "lib.zip", quiet = TRUE)
+  download.file("https://github.com/caiohamamura/mingw64-libhdf5-dev/archive/v1.8.20.zip", "lib.zip", quiet = TRUE)
   dir.create("../windows", showWarnings = FALSE)
   unzip("lib.zip", exdir = "../windows")
   unlink("lib.zip")

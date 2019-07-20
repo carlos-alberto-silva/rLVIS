@@ -5,23 +5,16 @@ LIBCLIDAR_ROOT = libclidar
 CMPFIT_ROOT = cmpfit-1.2
 GSL_ROOT = gsl
 
-THIS=gediRat
-
-LIBS = -lgdal_i -lgeotiff_i
 PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DGSL_DLL
-BIN=.exe
 ARCH=$(PROCESSOR_ARCHITECTURE)
 
 HDF5_LIB = ../windows/include/
-LIBS += -lgsl -lgslcblas -ltiff -L${GSL_ROOT}
 PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
--I${LIBCLIDAR_ROOT} -I${HDF5_LIB} -I. -I../windows/hdf5-1.8.16/include \
+-I${LIBCLIDAR_ROOT} -I. -I../windows/mingw64-libhdf5-dev-1.8.20/include \
 -I../windows/gsl-2.4/include -I./cmpfit-1.2 -I../windows/libgeotiff-1.4.3 \
 -I../windows/libgeotiff-1.4.3/libxtiff -I../windows/libtiff-4.0.9/include \
 -I$(RWINLIB)/include/gdal
 
-#CFLAGS += -Wl,--verbose
-#CFLAGS += -g
 src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c \
 	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
@@ -31,7 +24,6 @@ src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 src += $(CMPFIT_ROOT)/mpfit.c
 OBJECTS = $(src:.c=.o)
 OBJECTS += gediMetric.o
-EXE=$(THIS)$(BIN)
 
 # GSLFit=linear.o
 # MIN=mpfit
