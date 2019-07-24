@@ -1,5 +1,6 @@
-#' @useDynLib rLVIS processFloWave2
+#' @useDynLib rLVIS
+#' @import Rcpp methods
 #' @export
-metrics <- function(input, output) {
-  .Call("processFloWave2", input, output)
+processFloWave <- function(input, output) {
+  processFloWave2(input, output)
 }

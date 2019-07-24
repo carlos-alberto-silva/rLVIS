@@ -5,7 +5,7 @@ LIBCLIDAR_ROOT = libclidar
 CMPFIT_ROOT = cmpfit-1.2
 GSL_ROOT = gsl
 
-PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DGSL_DLL
+PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DDLL_EXPORTS
 ARCH=$(PROCESSOR_ARCHITECTURE)
 
 HDF5_LIB = ../windows/include/
@@ -15,23 +15,24 @@ PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
 -I../windows/libgeotiff-1.4.3/libxtiff -I../windows/libtiff-4.0.9/include \
 -I$(RWINLIB)/include/gdal
 
+
+PKG_CXXFLAGS = $(PKG_CFLAGS)
+CXX_STD = CXX11
+
+
 src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c \
 	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
 	$(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c \
 	$(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c \
-	$(HANCOCKTOOLS_ROOT)/tools.c #$(GEDIRAT_ROOT)/photonCount.c
+	$(GEDIRAT_ROOT)/gediMetric.o
 src += $(CMPFIT_ROOT)/mpfit.c
 OBJECTS = $(src:.c=.o)
-OBJECTS += gediMetric.o
 
-# GSLFit=linear.o
-# MIN=mpfit
-# MPFIT=${CMPFIT_ROOT}/$(MIN)
-
+src_cpp = $(wildcard *.cpp)
+OBJECTS += $(src_cpp:.cpp=.o)
 
 VERSION = 2.2.3
-COMPILED_BY ?= gcc-4.6.3
 RWINLIB = ../windows/gdal2-$(VERSION)
 
 
@@ -48,10 +49,9 @@ PKG_LIBS += \
 
 all: winlibs
 
+
 winlibs:
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" $(VERSION)
 
-clean:
-	rm -f $(SHLIB) $(OBJECTS)
 
-.PHONY: clean winlibs
+.PHONY: winlibs

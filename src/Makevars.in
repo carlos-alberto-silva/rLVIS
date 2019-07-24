@@ -21,17 +21,19 @@ src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
 	$(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c \
 	$(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c \
-	$(HANCOCKTOOLS_ROOT)/tools.c #$(GEDIRAT_ROOT)/photonCount.c
+	$(GEDIRAT_ROOT)/gediMetric.o
 src += $(CMPFIT_ROOT)/mpfit.c
 OBJECTS = $(src:.c=.o)
-OBJECTS += gediMetric.o
 
-all: clean deps $(OBJECTS) $(SHLIB)
+src_cpp = $(wildcard *.cpp)
+OBJECTS += $(src_cpp:.cpp=.o)
 
-deps: 
+
+all: deps
+
+
+deps:
 	Rscript ../tools/deps.R
 
-clean:
-	rm -f $(SHLIB) $(OBJECTS)
 
-.PHONY: clean deps
+.PHONY: deps
