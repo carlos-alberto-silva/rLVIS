@@ -2,3 +2,15 @@
 .Rhistory
 .RData
 .Ruserdata
+.vscode
+windows
+cmpfit
+*.o
+*.exe
+*.dll
+dev/
+**/.hg/
+src/tools
+src/gedisimulator
+src/libclidar
+src/cmpfit-1.2
