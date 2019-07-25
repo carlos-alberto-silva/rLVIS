@@ -19,6 +19,7 @@ PKG_CFLAGS += -Igedisimulator -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
 PKG_CXXFLAGS = $(PKG_CFLAGS)
 CXX_STD = CXX11
 
+PKG_CFLAGS += -D__USE_MINGW_ANSI_STDIO
 
 src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c \
@@ -47,11 +48,12 @@ PKG_LIBS += \
 	-lodbc32 -lodbccp32 -liconv -lpsapi -lws2_32 -lcrypt32 -lwldap32 -lsecur32 -lgdi32 \
 	-lgsl -lgslcblas
 
-all: winlibs
-
+all: winlibs deps
 
 winlibs:
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" $(VERSION)
+	Rscript.exe "../tools/winlibs.R" $(VERSION)
 
+deps:
+	Rscript.exe ../tools/deps.R
 
-.PHONY: winlibs
+.PHONY: winlibs deps

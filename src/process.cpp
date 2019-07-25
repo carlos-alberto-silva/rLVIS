@@ -60,7 +60,6 @@ float rhoG;
 float rhoC;
 
 control* makeControl(const char* input, const char* output){
-  int i=0;
   control *dimage=NULL;
 
   /*allocate structures*/
