@@ -28,7 +28,7 @@ level1b<-readLevel1b(level1bpath=level1b_filepath)
 
 }
 \seealso{
-\code{\link[h5]{h5file}} in the \emph{h5} package.
+\code{\link[h5]{H5File}} in the \emph{h5} package.
 }
 \author{
 Carlos Alberto Silva. This function calls \emph{h5file} function from h5 package (Author: Mario Annau)
