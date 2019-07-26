@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // processFloWave2
-Rcpp::NumericVector processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVector output);
+Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVector output);
 RcppExport SEXP _rLVIS_processFloWave2(SEXP inputSEXP, SEXP outputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

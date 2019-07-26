@@ -23,6 +23,7 @@ extern "C" {
 }
 
 #include <Rcpp.h>
+#include <process.h>
 
   /*##############################*/
   /*# Generates metrics from     #*/
@@ -54,6 +55,8 @@ extern "C" {
   /*#    You should have received a copy of the GNU General Public License #*/
   /*#    along with gediRat.  If not, see <http://www.gnu.org/licenses/>.  #*/
   /*########################################################################*/
+
+using namespace Rcpp;
 
   /*element reflectance*/
 float rhoG;
@@ -118,7 +121,7 @@ control* makeControl(const char* input, const char* output){
   dimage->noise.newPsig=-1.0;   /*leave blank*/
   dimage->gediIO.dontTrustGround=0;  /*do trust ground in waveforms, if there*/
   dimage->readBinLVIS=0;      /*read ASCII rather than binary LVIS*/
-  dimage->readHDFlvis=0;      /*read ASCII rather than HDF5 LVIS*/
+  dimage->readHDFlvis=1;      /*read ASCII rather than HDF5 LVIS*/
   dimage->readHDFgedi=0;      /*read ASCII rather than HDF5 GEDI*/
   dimage->gediIO.readPsigma=1;       /*read pSigma from file*/
   dimage->coord2dp=1;         /*round up coords in output*/
@@ -130,9 +133,10 @@ control* makeControl(const char* input, const char* output){
   dimage->gediIO.den->meanN=0.0;  /*we haven't added noise yet*/
   dimage->gediIO.den->thresh=0.00000001;  /*tiny number as no noise yet*/
   dimage->gediIO.den->noiseTrack=0;
-  dimage->gediIO.den->minWidth=0;
-  dimage->gediIO.den->varNoise=0;
-  dimage->gediIO.den->threshScale=1.5;
+  dimage->gediIO.den->minWidth=2;
+  dimage->gediIO.den->varNoise=1;
+  dimage->gediIO.den->statsLen=10;
+  dimage->gediIO.den->threshScale=3;
   dimage->gediIO.den->fitGauss=0;
   dimage->gediIO.den->psWidth=0.0;
 
@@ -144,7 +148,7 @@ control* makeControl(const char* input, const char* output){
   dimage->gediIO.gFit->minWidth=0;    /*no denoising here*/
   dimage->gediIO.gFit->varNoise=0;    /*no denoising here*/
   dimage->gediIO.gFit->gWidth=1.2;
-  dimage->gediIO.gFit->sWidth=0.0;
+  dimage->gediIO.gFit->sWidth=0.4;
   dimage->gediIO.gFit->fitGauss=1;
   dimage->gediIO.gFit->minGsig=0.764331;
   /*noise parameters*/
@@ -203,12 +207,13 @@ control* makeControl(const char* input, const char* output){
 
 
 // [[Rcpp::export]]
-Rcpp::NumericVector processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVector output)
+Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVector output)
 {
   int i=0;
   control *dimage=NULL;
   dataStruct *data=NULL;
   metStruct *metric=NULL;
+  Rcpp::DataFrame resultDF=DataFrame::create();
   std::string input_str = Rcpp::as<std::string>(input[0]);
   std::string output_str = Rcpp::as<std::string>(output[0]);
   float *processed=NULL,*denoised=NULL;;
@@ -239,6 +244,9 @@ Rcpp::NumericVector processFloWave2(Rcpp::CharacterVector input, Rcpp::Character
     /*check bounds if needed*/
     if(dimage->useBounds)checkWaveformBounds(data,dimage);
 
+    if (resultDF.ncol() == 0) {
+      resultDF = createMetricsDataFrame(dimage);
+    }
     /*is the data usable*/
     if(data->usable){
       /*denoise and change pulse if needed*/
@@ -266,8 +274,8 @@ Rcpp::NumericVector processFloWave2(Rcpp::CharacterVector input, Rcpp::Character
         findMetrics(metric,dimage->gediIO.gFit->gPar,dimage->gediIO.gFit->nGauss,denoised,data->noised,data->nBins,data->z,dimage,data);
 
         /*write results*/
-        if(dimage->readBinLVIS||dimage->readHDFlvis||dimage->readHDFgedi)writeResults(data,dimage,metric,i,denoised,processed,dimage->gediIO.inList[0]);
-        else                                                             writeResults(data,dimage,metric,i,denoised,processed,dimage->gediIO.inList[i]);
+        if(dimage->readBinLVIS||dimage->readHDFlvis||dimage->readHDFgedi)writeMetricsDataFrame(data,dimage,metric,i,denoised,processed,resultDF);
+        else                                                             writeMetricsDataFrame(data,dimage,metric,i,denoised,processed,resultDF);
       }else{  /*ICESat-2 mode*/
         photonCountCloud(denoised,data,&dimage->photonCount,dimage->outRoot,i,dimage->gediIO.den,&dimage->noise);
       }/*operation mode switch*/
@@ -362,5 +370,217 @@ Rcpp::NumericVector processFloWave2(Rcpp::CharacterVector input, Rcpp::Character
     dimage->hdfLvis=tidyLVISstruct(dimage->hdfLvis);
     TIDY(dimage);
   }
-  return(0);
+  return(resultDF);
 }/*main*/
+
+DataFrame createMetricsDataFrame(control* dimage) {
+  char name[22];
+  DataFrame df = DataFrame::create();
+
+  df.push_back(CharacterVector(dimage->gediIO.nFiles), "waveID");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"true ground");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"true top");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"ground slope");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"ALS cover");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"gHeight");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"maxGround");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"inflGround");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"signal top");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"signal bottom");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"cover");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"leading edge ext");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"trailing edge extent");
+  
+  // RHs
+  int nRH = (int)(100.0/dimage->rhRes+1);
+  for (int i=0;i<nRH;i++) {
+    sprintf(name, "rhGauss %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  for (int i=0;i<nRH;i++) {
+    sprintf(name, "rhMax %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  for (int i=0;i<nRH;i++) {
+    sprintf(name, "rhInfl %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  for (int i=0;i<nRH;i++) {
+    sprintf(name, "rhReal %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"gaussHalfCov");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"maxHalfCov");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"infHalfCov");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"bayHalfCov");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"pSigma");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"fSigma");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"linkM");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"linkCov");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"lon");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"lat");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"groundOverlap");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"groundMin");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"groundInfl");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"waveEnergy");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"blairSense");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"pointDense");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"beamDense");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"zenith");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"FHD");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"niM2");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"niM2.1");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"meanNoise");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"noiseStdev");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"noiseThresh");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDhist");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDcan");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDcanHist");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDcanGauss");
+  df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDcanGhist");
+  
+  // LAI  
+  int laiBins = (int)(dimage->maxLAIh/dimage->laiRes+0.5)+1;
+  for (int i=0;i<laiBins;i++) {
+    sprintf(name, "tLAI %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  for (int i=0;i<laiBins;i++) {
+    sprintf(name, "gLAI %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  for (int i=0;i<laiBins;i++) {
+    sprintf(name, "hgLAI %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  for (int i=0;i<laiBins;i++) {
+    sprintf(name, "hiLAI %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  for (int i=0;i<laiBins;i++) {
+    sprintf(name, "hmLAI %g", (float)i*dimage->rhRes);
+    df.push_back(NumericVector(dimage->gediIO.nFiles), name);
+  }
+  return (df);
+}
+
+void writeMetricsDataFrame(dataStruct *data,control *dimage,metStruct *metric,int numb,float *denoised,float *processed, DataFrame output) {
+  int colIndex = 0;
+  ((CharacterVector)(output[colIndex++]))[numb] = data->waveID;
+  //true ground
+  ((NumericVector)(output[colIndex++]))[numb] = data->gElev;
+  //true top
+  ((NumericVector)(output[colIndex++]))[numb] = data->tElev;
+  //ground slope
+  ((NumericVector)(output[colIndex++]))[numb] = data->slope;
+  //ALS cover
+  ((NumericVector)(output[colIndex++]))[numb] = data->cov;
+  //gHeight
+  ((NumericVector)(output[colIndex++]))[numb] = metric->gHeight;
+  //maxGround
+  ((NumericVector)(output[colIndex++]))[numb] = metric->maxGround;
+  //inflGround
+  ((NumericVector)(output[colIndex++]))[numb] = metric->inflGround;
+  //signal top
+  ((NumericVector)(output[colIndex++]))[numb] = metric->tElev;
+  //signal bottom
+  ((NumericVector)(output[colIndex++]))[numb] = metric->bElev;
+  //cover
+  ((NumericVector)(output[colIndex++]))[numb] = metric->cov;
+  //leading edge ext
+  ((NumericVector)(output[colIndex++]))[numb] = metric->leExt;
+  //trailing edge extent
+  ((NumericVector)(output[colIndex++]))[numb] = metric->teExt;
+  //rhGauss ...
+  for (int i; i < metric->nRH; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->rh[i];
+  //rhMax ...
+  for (int i; i < metric->nRH; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->rhMax[i];
+  //rhInfl ...
+  for (int i; i < metric->nRH; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->rhInfl[i];
+  //rhReal ...
+  for (int i; i < metric->nRH; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->rhReal[i];
+  //gaussHalfCov
+  ((NumericVector)(output[colIndex++]))[numb] = metric->covHalfG;
+  //maxHalfCov
+  ((NumericVector)(output[colIndex++]))[numb] = metric->covHalfM;
+  //infHalfCov
+  ((NumericVector)(output[colIndex++]))[numb] = metric->covHalfI;
+  //bayHalfCov
+  ((NumericVector)(output[colIndex++]))[numb] = metric->covHalfB;
+  //pSigma
+  ((NumericVector)(output[colIndex++]))[numb] = data->pSigma;
+  //fSigma
+  ((NumericVector)(output[colIndex++]))[numb] = data->fSigma;
+  if(dimage->noise.linkNoise) {
+    //linkM
+    ((NumericVector)(output[colIndex++]))[numb] = dimage->noise.linkM;
+    //linkCov
+    ((NumericVector)(output[colIndex++]))[numb] = dimage->noise.linkCov;
+  } else {
+    ((NumericVector)(output[colIndex++]))[numb] = NA_REAL;
+    //linkCov
+    ((NumericVector)(output[colIndex++]))[numb] = NA_REAL;
+  }
+  //lon
+  ((NumericVector)(output[colIndex++]))[numb] = data->lon;
+  //lat
+  ((NumericVector)(output[colIndex++]))[numb] = data->lat;
+  //groundOverlap
+  ((NumericVector)(output[colIndex++]))[numb] = data->gLap;
+  //groundMin
+  ((NumericVector)(output[colIndex++]))[numb] = data->gMinimum;
+  //groundInfl
+  ((NumericVector)(output[colIndex++]))[numb] = data->gInfl;
+  //waveEnergy
+  ((NumericVector)(output[colIndex++]))[numb] = metric->totE;
+  //blairSense
+  ((NumericVector)(output[colIndex++]))[numb] = metric->blairSense;
+  //pointDense
+  ((NumericVector)(output[colIndex++]))[numb] = data->pointDense;
+  //beamDense
+  ((NumericVector)(output[colIndex++]))[numb] = data->beamDense;
+  //zenith
+  ((NumericVector)(output[colIndex++]))[numb] = data->zen;
+  //FHD
+  ((NumericVector)(output[colIndex++]))[numb] = metric->FHD;
+  //niM2
+  ((NumericVector)(output[colIndex++]))[numb] = metric->niM2;
+  //niM2.1
+  ((NumericVector)(output[colIndex++]))[numb] = metric->niM21;
+  //meanNoise
+  ((NumericVector)(output[colIndex++]))[numb] = dimage->gediIO.den->meanN;
+  //noiseStdev
+  ((NumericVector)(output[colIndex++]))[numb] = (dimage->gediIO.den->thresh-dimage->gediIO.den->meanN)/dimage->gediIO.den->threshScale;
+  //noiseThresh
+  ((NumericVector)(output[colIndex++]))[numb] = dimage->gediIO.den->thresh;
+  //FHDhist
+  ((NumericVector)(output[colIndex++]))[numb] = metric->FHDhist;
+  //FHDcan
+  ((NumericVector)(output[colIndex++]))[numb] = metric->FHDcan;
+  //FHDcanHist
+  ((NumericVector)(output[colIndex++]))[numb] = metric->FHDcanH;
+  //FHDcanGauss
+  ((NumericVector)(output[colIndex++]))[numb] = metric->FHDcanGauss;
+  //FHDcanGhist
+  ((NumericVector)(output[colIndex++]))[numb] = metric->FHDcanGhist;
+  //tLAI ...
+  for (int i; i < metric->laiBins; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->tLAI[i];
+  //gLAI ...
+  for (int i; i < metric->laiBins; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->gLAI[i];
+  //hgLAI ...
+  for (int i; i < metric->laiBins; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->hgLAI[i];
+  //hiLAI ...
+  for (int i; i < metric->laiBins; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->hiLAI[i];
+  //hmLAI ...
+  for (int i; i < metric->laiBins; i++)
+    ((NumericVector)(output[colIndex++]))[numb] = metric->hmLAI[i];
+}
