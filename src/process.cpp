@@ -121,7 +121,7 @@ control* makeControl(const char* input, const char* output){
   dimage->noise.newPsig=-1.0;   /*leave blank*/
   dimage->gediIO.dontTrustGround=0;  /*do trust ground in waveforms, if there*/
   dimage->readBinLVIS=0;      /*read ASCII rather than binary LVIS*/
-  dimage->readHDFlvis=1;      /*read ASCII rather than HDF5 LVIS*/
+  dimage->readHDFlvis=0;      /*read ASCII rather than HDF5 LVIS*/
   dimage->readHDFgedi=0;      /*read ASCII rather than HDF5 GEDI*/
   dimage->gediIO.readPsigma=1;       /*read pSigma from file*/
   dimage->coord2dp=1;         /*round up coords in output*/
@@ -133,10 +133,9 @@ control* makeControl(const char* input, const char* output){
   dimage->gediIO.den->meanN=0.0;  /*we haven't added noise yet*/
   dimage->gediIO.den->thresh=0.00000001;  /*tiny number as no noise yet*/
   dimage->gediIO.den->noiseTrack=0;
-  dimage->gediIO.den->minWidth=2;
-  dimage->gediIO.den->varNoise=1;
-  dimage->gediIO.den->statsLen=10;
-  dimage->gediIO.den->threshScale=3;
+  dimage->gediIO.den->minWidth=0;
+  dimage->gediIO.den->varNoise=0;
+  dimage->gediIO.den->threshScale=1.5;
   dimage->gediIO.den->fitGauss=0;
   dimage->gediIO.den->psWidth=0.0;
 
@@ -148,7 +147,7 @@ control* makeControl(const char* input, const char* output){
   dimage->gediIO.gFit->minWidth=0;    /*no denoising here*/
   dimage->gediIO.gFit->varNoise=0;    /*no denoising here*/
   dimage->gediIO.gFit->gWidth=1.2;
-  dimage->gediIO.gFit->sWidth=0.4;
+  dimage->gediIO.gFit->sWidth=0.0;
   dimage->gediIO.gFit->fitGauss=1;
   dimage->gediIO.gFit->minGsig=0.764331;
   /*noise parameters*/
@@ -167,6 +166,33 @@ control* makeControl(const char* input, const char* output){
   dimage->readL2=0;   /*do not read L2*/
   /*photon counting*/
   dimage->ice2=0;             /*GEDI mode, rather than ICESat-2*/
+
+
+  // Change parameters based on user input
+  
+  // TODO if readHDFlvis
+  dimage->readHDFlvis=1;
+  dimage->gediIO.readPsigma=0;
+
+  // TODO if varNoise
+  dimage->gediIO.den->varNoise=1;
+
+  // TODO if varScale
+  dimage->gediIO.den->varNoise=1;
+  dimage->gediIO.den->threshScale=3;
+
+  // TODO minWidth
+  dimage->gediIO.den->minWidth=2;
+
+  // TODO sWidth
+  dimage->gediIO.den->sWidth=8;
+
+  // TODO statsLen
+  dimage->gediIO.den->statsLen=10;
+
+
+
+
 #ifdef USEPHOTON
   dimage->photonCount.designval=2.1;
   dimage->photonCount.prob=NULL;
@@ -232,7 +258,7 @@ Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVect
 
   /*loop over files*/
     for(i=0;i<dimage->gediIO.nFiles;i++){
-      if((i%dimage->gediIO.nMessages)==0)Rprintf("Wave %d of %d\n",i+1,dimage->gediIO.nFiles);
+      Rprintf("Wave %d of %d          \r",i+1,dimage->gediIO.nFiles);
 
     /*read waveform*/
     if(dimage->readBinLVIS)     data=readBinaryLVIS(dimage->gediIO.inList[0],&dimage->lvis,i,&dimage->gediIO);
