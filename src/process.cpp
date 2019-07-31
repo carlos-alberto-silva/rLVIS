@@ -62,7 +62,72 @@ using namespace Rcpp;
 float rhoG;
 float rhoC;
 
-control* makeControl(const char* input, const char* output){
+control* makeControl(
+  const char*   input,
+  bool            writeFit        = false,
+  bool            writeGauss      = false,
+  bool            readBinLVIS     = false,
+  bool            readHDFlvis     = false,
+  bool            readHDFgedi     = false,
+  CharacterVector level2          = CharacterVector(0),
+  NumericVector   bounds          = NumericVector(0),
+  bool            ground          = false,
+  bool            useInt          = false,
+  bool            useFrac         = false,
+  float           rhRes           = 5,
+  float           laiRes          = 10.0,
+  float           laiH            = 30.0,
+  bool            noRHgauss       = false,
+  float           gTol            = 0.0,
+  float           fhdHistRes      = 0.001,
+  bool            forcePsigma     = false,
+  bool            bayesGround     = false,
+  bool            dontTrustGround = false,
+  bool            noRoundCoord    = false,
+  NumericVector   dcBias          = NumericVector(0),
+  float           nSig            = 0.0,
+  int             seed            = 1,
+  float           hNoise          = 0.0,
+  NumericVector   linkNoise       = NumericVector(0),
+  float           linkFsig        = 5.5,
+  float           linkPsig        = 0.764331,
+  float           trueSig         = 5.0,
+  int             bitRate         = 12,
+  float           maxDN           = 4096.0,
+  bool            renoise         = false,
+  float           newPsig         = 1.0,
+  float           oldPsig         = 0.764331,
+  float           addDrift        = 0.0,
+  bool            missGround      = 0,
+  NumericVector   minGap          = NumericVector(0),
+  bool            photonCount     = false,
+  float           nPhotons        = 2.1,
+  float           photonWind      = 200,
+  float           noiseMult       = 0.1,
+  float           meanN           = 0.0,
+  float           thresh          = 0.00000001,
+  bool            varNoise        = false,
+  float           varScale        = 1.5,
+  float           statsLen        = 30.0,
+  bool            noiseTrack      = false,
+  float           sWidth          = 0.0,
+  float           psWidth         = 0.0,
+  float           msWidth         = 0.0,
+  bool            preMatchF       = false,
+  bool            postMatchF      = false,
+  CharacterVector pFile           = CharacterVector(0),
+  float           gWidth          = 1.2,
+  float           minGsig         = 0.764331,
+  float           minWidth        = 0,
+  bool            medNoise        = false,
+  bool            varDrift        = false,
+  NumericVector   driftFac        = NumericVector(0),
+  float           varRhoG         = 0.4,
+  float           varRhoC         = 0.57,
+  float           pSigma          = 1.0,
+  bool            gold            = false,
+  float           deconTol        = 0.0000001
+){
   control *dimage=NULL;
 
   /*allocate structures*/
@@ -152,9 +217,9 @@ control* makeControl(const char* input, const char* output){
   dimage->gediIO.gFit->minGsig=0.764331;
   /*noise parameters*/
   dimage->noise.meanN=0.0;
-  dimage->noise.nSig=0.0;
+  dimage->noise.nSig=nSig;
   dimage->bThresh=0.001;
-  dimage->noise.hNoise=0.0;
+  dimage->noise.hNoise=hNoise;
   dimage->noise.offset=94.0;
   /*projection, not yet used*/
   dimage->gediIO.wEPSG=4326;  /*waveforms*/
@@ -169,7 +234,9 @@ control* makeControl(const char* input, const char* output){
 
 
   // Change parameters based on user input
-  
+
+
+
   // TODO if readHDFlvis
   dimage->readHDFlvis=1;
   dimage->gediIO.readPsigma=0;
@@ -218,8 +285,132 @@ control* makeControl(const char* input, const char* output){
   dimage->gediIO.inList=chChalloc(dimage->gediIO.nFiles,"input name list",0);
   dimage->gediIO.inList[0]=challoc((uint64_t)strlen(input)+1,"input name list",0);
   strcpy(dimage->gediIO.inList[0],input);
-  strcpy(dimage->outRoot,output);
+  if (level2.length() == 1) {
+    dimage->readL2=1;
+    strcpy(dimage->l2namen,level2[0]);
+  }else if(writeFit){
+    dimage->writeFit=1;
+  }else if(writeGauss){
+    dimage->writeGauss=1;
+  }else if(dcBias.length() == 1){
+    dimage->noise.meanN=dimage->noise.offset=dcBias[0];
+  }else if(ground){
+    dimage->gediIO.ground=1;
+  }else if(varNoise){
+    dimage->gediIO.den->varNoise=1;
+  }else if(medNoise){
+    dimage->gediIO.den->medStats=1;
+  }else if(noiseTrack){
+    dimage->gediIO.den->noiseTrack=1;
+  }else if(pFile.length() == 1){
+    strcpy(dimage->gediIO.den->pNamen,pFile[0]);
+    dimage->gediIO.den->deconGauss=0;
+  }else if(gold){
+    dimage->gediIO.den->deconMeth=0;
+  }else if(preMatchF){
+    dimage->gediIO.den->preMatchF=1;
+  }else if(postMatchF){
+    dimage->gediIO.den->posMatchF=1;
+  }else if(useInt){
+    dimage->gediIO.useInt=1;
+    dimage->gediIO.useCount=0;
+    dimage->gediIO.useFrac=0;
+  }else if(useFrac){
+    dimage->gediIO.useInt=0;
+    dimage->gediIO.useCount=0;
+    dimage->gediIO.useFrac=1;
+  }else if(linkNoise.length() == 2){
+    dimage->noise.linkNoise=1;
+    dimage->noise.linkM=linkNoise[0];
+    dimage->noise.linkCov=linkNoise[1];
+  }else if(missGround){
+    dimage->noise.missGround=1;
+  }else if(minGap.length() == 1){
+    dimage->noise.missGround=1;
+    dimage->noise.minGap=minGap[0];
+  }else if(bayesGround){
+    dimage->bayesGround=1;
+  }else if(bitRate != 12){
+    dimage->noise.bitRate=bitRate;
+    dimage->noise.maxDN=pow(2.0,(float)dimage->noise.bitRate);
+  }else if(noRHgauss){
+    dimage->noRHgauss=1;
+  }else if(renoise){
+    dimage->renoiseWave=1;
+  }else if(dontTrustGround){
+    dimage->gediIO.dontTrustGround=1;
+  }else if(readBinLVIS){
+    dimage->readBinLVIS=1;
+  }else if(readHDFlvis){
+    dimage->readHDFlvis=1;
+    dimage->gediIO.readPsigma=0;
+  }else if(readHDFgedi){
+    dimage->readHDFgedi=1;
+  }else if(forcePsigma){
+    dimage->gediIO.readPsigma=0;
+  }else if(noRoundCoord){
+    dimage->coord2dp=0;
+  }else if(bounds.length() == 4){
+    dimage->useBounds=1;
+    dimage->minX=dimage->gediIO.bounds[0]=bounds[0];
+    dimage->minY=dimage->gediIO.bounds[1]=bounds[1];
+    dimage->maxX=dimage->gediIO.bounds[2]=bounds[2];
+    dimage->maxY=dimage->gediIO.bounds[3]=bounds[3];
+  }else if(varDrift){
+    dimage->gediIO.den->corrDrift=1;
+    dimage->gediIO.den->varDrift=1;
+  }else if(driftFac.length() == 1) {
+    dimage->gediIO.den->corrDrift=1;
+    dimage->gediIO.den->varDrift=0;
+    dimage->gediIO.den->fixedDrift=driftFac[0];
+  #ifdef USEPHOTON
+  }else if(!strncasecmp(argv[i],"-photonCount",12)){
+    dimage->ice2=1;
+  }else if(!strncasecmp(argv[i],"-nPhotons",9)){
+    checkArguments(1,i,argc,"-nPhotons");
+    dimage->photonCount.designval=atof(argv[++i]);
+  }else if(!strncasecmp(argv[i],"-photonWind",11)){
+    checkArguments(1,i,argc,"-photonWind");
+    dimage->photonCount.H=atof(argv[++i]);
+  }else if(!strncasecmp(argv[i],"-noiseMult",10)){
+    checkArguments(1,i,argc,"-noiseMult");
+    dimage->photonCount.noise_mult=atof(argv[++i]);
+  }else if(!strncasecmp(argv[i],"-rhoVrhoG",9)){
+    checkArguments(1,i,argc,"-rhoVrhoG");
+    dimage->photonCount.rhoVrhoG=atof(argv[++i]);
+  }else if(!strncasecmp(argv[i],"-photHDF",8)){
+    dimage->photonCount.writeHDF=1;
+  #endif
+  }
 
+
+  // Parameters default
+  srand(seed);
+  dimage->gediIO.den->meanN=meanN;
+  dimage->gediIO.gFit->gWidth=gWidth;
+  dimage->gediIO.den->thresh=thresh;
+  dimage->gediIO.den->sWidth=sWidth;
+  dimage->gediIO.den->psWidth=psWidth;
+  dimage->gediIO.den->msWidth=msWidth;
+  dimage->gediIO.gFit->minGsig=minGsig;
+  dimage->gediIO.den->minWidth=minWidth;
+  dimage->gediIO.den->statsLen=statsLen;
+  dimage->gediIO.den->threshScale=varScale;
+  dimage->gediIO.den->pSigma=pSigma;
+  dimage->gediIO.den->deChang=deconTol;
+  dimage->rhRes=rhRes;
+  dimage->maxLAIh=laiH;
+  dimage->noise.trueSig=trueSig;
+  rhoG=varRhoG;
+  rhoC=varRhoC;
+  dimage->noise.maxDN=maxDN;
+  dimage->gTol=gTol;
+  dimage->noise.newPsig=newPsig;
+  dimage->gediIO.pSigma=oldPsig;
+  dimage->gediIO.linkPsig=linkPsig;
+  dimage->gediIO.linkFsig=linkFsig;
+  dimage->fhdHistRes=fhdHistRes;
+  dimage->noise.driftFact=addDrift;
 
   /*read deconvolution pulse if needed*/
   if(dimage->gediIO.den->preMatchF||dimage->gediIO.den->preMatchF||dimage->gediIO.den->deconMeth>=0)readPulse(dimage->gediIO.den);
@@ -233,7 +424,72 @@ control* makeControl(const char* input, const char* output){
 
 
 // [[Rcpp::export]]
-Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVector output)
+Rcpp::DataFrame processFloWave2(
+  CharacterVector input,
+  bool            writeFit        = false,
+  bool            writeGauss      = false,
+  bool            readBinLVIS     = false,
+  bool            readHDFlvis     = false,
+  bool            readHDFgedi     = false,
+  CharacterVector level2          = CharacterVector(0),
+  NumericVector   bounds          = NumericVector(0),
+  bool            ground          = false,
+  bool            useInt          = false,
+  bool            useFrac         = false,
+  float           rhRes           = 5,
+  float           laiRes          = 10.0,
+  float           laiH            = 30.0,
+  bool            noRHgauss       = false,
+  float           gTol            = 0.0,
+  float           fhdHistRes      = 0.001,
+  bool            forcePsigma     = false,
+  bool            bayesGround     = false,
+  bool            dontTrustGround = false,
+  bool            noRoundCoord    = false,
+  NumericVector   dcBias          = NumericVector(0),
+  float           nSig            = 0.0,
+  int             seed            = 1,
+  float           hNoise          = 0.0,
+  NumericVector   linkNoise       = NumericVector(0),
+  float           linkFsig        = 5.5,
+  float           linkPsig        = 0.764331,
+  float           trueSig         = 5.0,
+  int             bitRate         = 12,
+  float           maxDN           = 4096.0,
+  bool            renoise         = false,
+  float           newPsig         = 1.0,
+  float           oldPsig         = 0.764331,
+  float           addDrift        = 0.0,
+  bool            missGround      = 0,
+  NumericVector   minGap          = NumericVector(0),
+  bool            photonCount     = false,
+  float           nPhotons        = 2.1,
+  float           photonWind      = 200,
+  float           noiseMult       = 0.1,
+  float           meanN           = 0.0,
+  float           thresh          = 0.00000001,
+  bool            varNoise        = false,
+  float           varScale        = 1.5,
+  float           statsLen        = 30.0,
+  bool            noiseTrack      = false,
+  float           sWidth          = 0.0,
+  float           psWidth         = 0.0,
+  float           msWidth         = 0.0,
+  bool            preMatchF       = false,
+  bool            postMatchF      = false,
+  CharacterVector pFile           = CharacterVector(0),
+  float           gWidth          = 1.2,
+  float           minGsig         = 0.764331,
+  float           minWidth        = 0,
+  bool            medNoise        = false,
+  bool            varDrift        = false,
+  NumericVector   driftFac        = NumericVector(0),
+  float           varRhoG         = 0.4,
+  float           varRhoC         = 0.57,
+  float           pSigma          = 1.0,
+  bool            gold            = false,
+  float           deconTol        = 0.0000001
+)
 {
   int i=0;
   control *dimage=NULL;
@@ -241,11 +497,76 @@ Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVect
   metStruct *metric=NULL;
   Rcpp::DataFrame resultDF=DataFrame::create();
   std::string input_str = Rcpp::as<std::string>(input[0]);
-  std::string output_str = Rcpp::as<std::string>(output[0]);
   float *processed=NULL,*denoised=NULL;;
 
   /*read command Line*/
-    dimage=makeControl(input_str.c_str(), output_str.c_str());
+    dimage=makeControl(
+      input_str.c_str(),
+      writeFit,
+      writeGauss,
+      readBinLVIS,
+      readHDFlvis,
+      readHDFgedi,
+      level2,
+      bounds,
+      ground,
+      useInt,
+      useFrac,
+      rhRes,
+      laiRes,
+      laiH,
+      noRHgauss,
+      gTol,
+      fhdHistRes,
+      forcePsigma,
+      bayesGround,
+      dontTrustGround,
+      noRoundCoord,
+      dcBias,
+      nSig,
+      seed,
+      hNoise,
+      linkNoise,
+      linkFsig,
+      linkPsig,
+      trueSig,
+      bitRate,
+      maxDN,
+      renoise,
+      newPsig,
+      oldPsig,
+      addDrift,
+      missGround,
+      minGap,
+      photonCount,
+      nPhotons,
+      photonWind,
+      noiseMult,
+      meanN,
+      thresh,
+      varNoise,
+      varScale,
+      statsLen,
+      noiseTrack,
+      sWidth,
+      psWidth,
+      msWidth,
+      preMatchF,
+      postMatchF,
+      pFile,
+      gWidth,
+      minGsig,
+      minWidth,
+      medNoise,
+      varDrift,
+      driftFac,
+      varRhoG,
+      varRhoC,
+      pSigma,
+      gold,
+      deconTol
+    );
+
 
   /*set link noise if needed*/
     dimage->noise.linkSig=setNoiseSigma(dimage->noise.linkM,dimage->noise.linkCov,dimage->gediIO.linkPsig,dimage->gediIO.linkFsig,rhoC,rhoG);
@@ -258,7 +579,7 @@ Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVect
 
   /*loop over files*/
     for(i=0;i<dimage->gediIO.nFiles;i++){
-      Rprintf("Wave %d of %d          \r",i+1,dimage->gediIO.nFiles);
+      Rcout << "Wave " <<  i+1 << " of " << dimage->gediIO.nFiles << "          \r";
 
     /*read waveform*/
     if(dimage->readBinLVIS)     data=readBinaryLVIS(dimage->gediIO.inList[0],&dimage->lvis,i,&dimage->gediIO);
@@ -281,12 +602,22 @@ Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVect
       /*determine truths before noising*/
       determineTruth(data,dimage);
 
-      /*add noise if needed*/
-      addNoise(data,&dimage->noise,dimage->gediIO.fSigma,dimage->gediIO.pSigma,dimage->gediIO.res,rhoC,rhoG);
+/*set link noise if needed*/
 
+    if (  dimage->noise.driftFact ||
+          dimage->noise.missGround ||
+          dimage->noise.linkNoise ||
+          dimage->noise.nSig>0.0 ||
+          dimage->noise.meanN>0.0 ||
+          dimage->noise.hNoise>0.0 )
+    {
+      addNoise(data,&dimage->noise,dimage->gediIO.fSigma,dimage->gediIO.pSigma,dimage->gediIO.res,rhoC,rhoG);
+      denoised=processFloWave(data->noised,data->nBins,dimage->gediIO.den,1.0);
+    } else {
       /*process waveform*/
       /*denoise*/
-      denoised=processFloWave(data->noised,data->nBins,dimage->gediIO.den,1.0);
+      denoised=processFloWave(data->wave[data->useType],data->nBins,dimage->gediIO.den,1.0);
+    }
 
       /*are we in GEDI mode?*/
       if(!dimage->ice2){
@@ -348,8 +679,6 @@ Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVect
   if(dimage->readHDFgedi)dimage->hdfGedi=tidyGediHDF(dimage->hdfGedi);
 
 
-  if(dimage->writeGauss)Rprintf("Written to %s.gauss.txt\n",dimage->outRoot);
-  if(!dimage->ice2)Rprintf("Written to %s.metric.txt\n",dimage->outRoot);
   #ifdef USEPHOTON
   else             Rprintf("Written to %s\n",dimage->photonCount.outNamen);
   #endif
@@ -402,6 +731,7 @@ Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVect
 DataFrame createMetricsDataFrame(control* dimage) {
   char name[22];
   DataFrame df = DataFrame::create();
+  
 
   df.push_back(CharacterVector(dimage->gediIO.nFiles), "waveID");
   df.push_back(NumericVector(dimage->gediIO.nFiles),"true ground");
@@ -416,7 +746,7 @@ DataFrame createMetricsDataFrame(control* dimage) {
   df.push_back(NumericVector(dimage->gediIO.nFiles),"cover");
   df.push_back(NumericVector(dimage->gediIO.nFiles),"leading edge ext");
   df.push_back(NumericVector(dimage->gediIO.nFiles),"trailing edge extent");
-  
+
   // RHs
   int nRH = (int)(100.0/dimage->rhRes+1);
   for (int i=0;i<nRH;i++) {
@@ -435,7 +765,7 @@ DataFrame createMetricsDataFrame(control* dimage) {
     sprintf(name, "rhReal %g", (float)i*dimage->rhRes);
     df.push_back(NumericVector(dimage->gediIO.nFiles), name);
   }
-  
+
   df.push_back(NumericVector(dimage->gediIO.nFiles),"gaussHalfCov");
   df.push_back(NumericVector(dimage->gediIO.nFiles),"maxHalfCov");
   df.push_back(NumericVector(dimage->gediIO.nFiles),"infHalfCov");
@@ -465,27 +795,27 @@ DataFrame createMetricsDataFrame(control* dimage) {
   df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDcanHist");
   df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDcanGauss");
   df.push_back(NumericVector(dimage->gediIO.nFiles),"FHDcanGhist");
-  
-  // LAI  
+
+  // LAI
   int laiBins = (int)(dimage->maxLAIh/dimage->laiRes+0.5)+1;
   for (int i=0;i<laiBins;i++) {
-    sprintf(name, "tLAI %g", (float)i*dimage->rhRes);
+    sprintf(name, "tLAI%dt%d", i*(int)dimage->laiRes,(i+1)*(int)dimage->laiRes);
     df.push_back(NumericVector(dimage->gediIO.nFiles), name);
   }
   for (int i=0;i<laiBins;i++) {
-    sprintf(name, "gLAI %g", (float)i*dimage->rhRes);
+    sprintf(name, "gLAI%dt%d", i*(int)dimage->laiRes,(i+1)*(int)dimage->laiRes);
     df.push_back(NumericVector(dimage->gediIO.nFiles), name);
   }
   for (int i=0;i<laiBins;i++) {
-    sprintf(name, "hgLAI %g", (float)i*dimage->rhRes);
+    sprintf(name, "hgLAI%dt%d", i*(int)dimage->laiRes,(i+1)*(int)dimage->laiRes);
     df.push_back(NumericVector(dimage->gediIO.nFiles), name);
   }
   for (int i=0;i<laiBins;i++) {
-    sprintf(name, "hiLAI %g", (float)i*dimage->rhRes);
+    sprintf(name, "hiLAI%dt%d", i*(int)dimage->laiRes,(i+1)*(int)dimage->laiRes);
     df.push_back(NumericVector(dimage->gediIO.nFiles), name);
   }
   for (int i=0;i<laiBins;i++) {
-    sprintf(name, "hmLAI %g", (float)i*dimage->rhRes);
+    sprintf(name, "hmLAI%dt%d", i*(int)dimage->laiRes,(i+1)*(int)dimage->laiRes);
     df.push_back(NumericVector(dimage->gediIO.nFiles), name);
   }
   return (df);
@@ -493,7 +823,9 @@ DataFrame createMetricsDataFrame(control* dimage) {
 
 void writeMetricsDataFrame(dataStruct *data,control *dimage,metStruct *metric,int numb,float *denoised,float *processed, DataFrame output) {
   int colIndex = 0;
-  ((CharacterVector)(output[colIndex++]))[numb] = data->waveID;
+  CharacterVector waveIDs = output[colIndex];
+  waveIDs[numb] = data->waveID;
+  output[colIndex++] = waveIDs;
   //true ground
   ((NumericVector)(output[colIndex++]))[numb] = data->gElev;
   //true top

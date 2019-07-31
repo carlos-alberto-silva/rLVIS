@@ -18,12 +18,13 @@ PKG_CFLAGS += -I$(GEDIRAT_ROOT) -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
 
 PKG_CXXFLAGS = $(PKG_CFLAGS)
 
+
 src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/tiffWrite.c $(LIBCLIDAR_ROOT)/gaussFit.c \
 	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
 	$(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c \
 	$(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c \
-	$(GEDIRAT_ROOT)/gediMetric.o
+	$(GEDIRAT_ROOT)/gediMetric.o msgHandling.c
 src += $(CMPFIT_ROOT)/mpfit.c
 OBJECTS = $(src:.c=.o)
 
@@ -33,9 +34,7 @@ OBJECTS += $(src_cpp:.cpp=.o)
 
 all: deps
 
-
 deps:
 	Rscript ../tools/deps.R
 
-
-.PHONY: deps
+.PHONY: deps clean

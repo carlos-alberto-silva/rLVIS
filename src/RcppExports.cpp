@@ -6,20 +6,82 @@
 using namespace Rcpp;
 
 // processFloWave2
-Rcpp::DataFrame processFloWave2(Rcpp::CharacterVector input, Rcpp::CharacterVector output);
-RcppExport SEXP _rLVIS_processFloWave2(SEXP inputSEXP, SEXP outputSEXP) {
+Rcpp::DataFrame processFloWave2(CharacterVector input, bool writeFit, bool writeGauss, bool readBinLVIS, bool readHDFlvis, bool readHDFgedi, CharacterVector level2, NumericVector bounds, bool ground, bool useInt, bool useFrac, float rhRes, float laiRes, float laiH, bool noRHgauss, float gTol, float fhdHistRes, bool forcePsigma, bool bayesGround, bool dontTrustGround, bool noRoundCoord, NumericVector dcBias, float nSig, int seed, float hNoise, NumericVector linkNoise, float linkFsig, float linkPsig, float trueSig, int bitRate, float maxDN, bool renoise, float newPsig, float oldPsig, float addDrift, bool missGround, NumericVector minGap, bool photonCount, float nPhotons, float photonWind, float noiseMult, float meanN, float thresh, bool varNoise, float varScale, float statsLen, bool noiseTrack, float sWidth, float psWidth, float msWidth, bool preMatchF, bool postMatchF, CharacterVector pFile, float gWidth, float minGsig, float minWidth, bool medNoise, bool varDrift, NumericVector driftFac, float varRhoG, float varRhoC, float pSigma, bool gold, float deconTol);
+RcppExport SEXP _rLVIS_processFloWave2(SEXP inputSEXP, SEXP writeFitSEXP, SEXP writeGaussSEXP, SEXP readBinLVISSEXP, SEXP readHDFlvisSEXP, SEXP readHDFgediSEXP, SEXP level2SEXP, SEXP boundsSEXP, SEXP groundSEXP, SEXP useIntSEXP, SEXP useFracSEXP, SEXP rhResSEXP, SEXP laiResSEXP, SEXP laiHSEXP, SEXP noRHgaussSEXP, SEXP gTolSEXP, SEXP fhdHistResSEXP, SEXP forcePsigmaSEXP, SEXP bayesGroundSEXP, SEXP dontTrustGroundSEXP, SEXP noRoundCoordSEXP, SEXP dcBiasSEXP, SEXP nSigSEXP, SEXP seedSEXP, SEXP hNoiseSEXP, SEXP linkNoiseSEXP, SEXP linkFsigSEXP, SEXP linkPsigSEXP, SEXP trueSigSEXP, SEXP bitRateSEXP, SEXP maxDNSEXP, SEXP renoiseSEXP, SEXP newPsigSEXP, SEXP oldPsigSEXP, SEXP addDriftSEXP, SEXP missGroundSEXP, SEXP minGapSEXP, SEXP photonCountSEXP, SEXP nPhotonsSEXP, SEXP photonWindSEXP, SEXP noiseMultSEXP, SEXP meanNSEXP, SEXP threshSEXP, SEXP varNoiseSEXP, SEXP varScaleSEXP, SEXP statsLenSEXP, SEXP noiseTrackSEXP, SEXP sWidthSEXP, SEXP psWidthSEXP, SEXP msWidthSEXP, SEXP preMatchFSEXP, SEXP postMatchFSEXP, SEXP pFileSEXP, SEXP gWidthSEXP, SEXP minGsigSEXP, SEXP minWidthSEXP, SEXP medNoiseSEXP, SEXP varDriftSEXP, SEXP driftFacSEXP, SEXP varRhoGSEXP, SEXP varRhoCSEXP, SEXP pSigmaSEXP, SEXP goldSEXP, SEXP deconTolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type input(inputSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type output(outputSEXP);
-    rcpp_result_gen = Rcpp::wrap(processFloWave2(input, output));
+    Rcpp::traits::input_parameter< CharacterVector >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< bool >::type writeFit(writeFitSEXP);
+    Rcpp::traits::input_parameter< bool >::type writeGauss(writeGaussSEXP);
+    Rcpp::traits::input_parameter< bool >::type readBinLVIS(readBinLVISSEXP);
+    Rcpp::traits::input_parameter< bool >::type readHDFlvis(readHDFlvisSEXP);
+    Rcpp::traits::input_parameter< bool >::type readHDFgedi(readHDFgediSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type level2(level2SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type bounds(boundsSEXP);
+    Rcpp::traits::input_parameter< bool >::type ground(groundSEXP);
+    Rcpp::traits::input_parameter< bool >::type useInt(useIntSEXP);
+    Rcpp::traits::input_parameter< bool >::type useFrac(useFracSEXP);
+    Rcpp::traits::input_parameter< float >::type rhRes(rhResSEXP);
+    Rcpp::traits::input_parameter< float >::type laiRes(laiResSEXP);
+    Rcpp::traits::input_parameter< float >::type laiH(laiHSEXP);
+    Rcpp::traits::input_parameter< bool >::type noRHgauss(noRHgaussSEXP);
+    Rcpp::traits::input_parameter< float >::type gTol(gTolSEXP);
+    Rcpp::traits::input_parameter< float >::type fhdHistRes(fhdHistResSEXP);
+    Rcpp::traits::input_parameter< bool >::type forcePsigma(forcePsigmaSEXP);
+    Rcpp::traits::input_parameter< bool >::type bayesGround(bayesGroundSEXP);
+    Rcpp::traits::input_parameter< bool >::type dontTrustGround(dontTrustGroundSEXP);
+    Rcpp::traits::input_parameter< bool >::type noRoundCoord(noRoundCoordSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type dcBias(dcBiasSEXP);
+    Rcpp::traits::input_parameter< float >::type nSig(nSigSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    Rcpp::traits::input_parameter< float >::type hNoise(hNoiseSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type linkNoise(linkNoiseSEXP);
+    Rcpp::traits::input_parameter< float >::type linkFsig(linkFsigSEXP);
+    Rcpp::traits::input_parameter< float >::type linkPsig(linkPsigSEXP);
+    Rcpp::traits::input_parameter< float >::type trueSig(trueSigSEXP);
+    Rcpp::traits::input_parameter< int >::type bitRate(bitRateSEXP);
+    Rcpp::traits::input_parameter< float >::type maxDN(maxDNSEXP);
+    Rcpp::traits::input_parameter< bool >::type renoise(renoiseSEXP);
+    Rcpp::traits::input_parameter< float >::type newPsig(newPsigSEXP);
+    Rcpp::traits::input_parameter< float >::type oldPsig(oldPsigSEXP);
+    Rcpp::traits::input_parameter< float >::type addDrift(addDriftSEXP);
+    Rcpp::traits::input_parameter< bool >::type missGround(missGroundSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type minGap(minGapSEXP);
+    Rcpp::traits::input_parameter< bool >::type photonCount(photonCountSEXP);
+    Rcpp::traits::input_parameter< float >::type nPhotons(nPhotonsSEXP);
+    Rcpp::traits::input_parameter< float >::type photonWind(photonWindSEXP);
+    Rcpp::traits::input_parameter< float >::type noiseMult(noiseMultSEXP);
+    Rcpp::traits::input_parameter< float >::type meanN(meanNSEXP);
+    Rcpp::traits::input_parameter< float >::type thresh(threshSEXP);
+    Rcpp::traits::input_parameter< bool >::type varNoise(varNoiseSEXP);
+    Rcpp::traits::input_parameter< float >::type varScale(varScaleSEXP);
+    Rcpp::traits::input_parameter< float >::type statsLen(statsLenSEXP);
+    Rcpp::traits::input_parameter< bool >::type noiseTrack(noiseTrackSEXP);
+    Rcpp::traits::input_parameter< float >::type sWidth(sWidthSEXP);
+    Rcpp::traits::input_parameter< float >::type psWidth(psWidthSEXP);
+    Rcpp::traits::input_parameter< float >::type msWidth(msWidthSEXP);
+    Rcpp::traits::input_parameter< bool >::type preMatchF(preMatchFSEXP);
+    Rcpp::traits::input_parameter< bool >::type postMatchF(postMatchFSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type pFile(pFileSEXP);
+    Rcpp::traits::input_parameter< float >::type gWidth(gWidthSEXP);
+    Rcpp::traits::input_parameter< float >::type minGsig(minGsigSEXP);
+    Rcpp::traits::input_parameter< float >::type minWidth(minWidthSEXP);
+    Rcpp::traits::input_parameter< bool >::type medNoise(medNoiseSEXP);
+    Rcpp::traits::input_parameter< bool >::type varDrift(varDriftSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type driftFac(driftFacSEXP);
+    Rcpp::traits::input_parameter< float >::type varRhoG(varRhoGSEXP);
+    Rcpp::traits::input_parameter< float >::type varRhoC(varRhoCSEXP);
+    Rcpp::traits::input_parameter< float >::type pSigma(pSigmaSEXP);
+    Rcpp::traits::input_parameter< bool >::type gold(goldSEXP);
+    Rcpp::traits::input_parameter< float >::type deconTol(deconTolSEXP);
+    rcpp_result_gen = Rcpp::wrap(processFloWave2(input, writeFit, writeGauss, readBinLVIS, readHDFlvis, readHDFgedi, level2, bounds, ground, useInt, useFrac, rhRes, laiRes, laiH, noRHgauss, gTol, fhdHistRes, forcePsigma, bayesGround, dontTrustGround, noRoundCoord, dcBias, nSig, seed, hNoise, linkNoise, linkFsig, linkPsig, trueSig, bitRate, maxDN, renoise, newPsig, oldPsig, addDrift, missGround, minGap, photonCount, nPhotons, photonWind, noiseMult, meanN, thresh, varNoise, varScale, statsLen, noiseTrack, sWidth, psWidth, msWidth, preMatchF, postMatchF, pFile, gWidth, minGsig, minWidth, medNoise, varDrift, driftFac, varRhoG, varRhoC, pSigma, gold, deconTol));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rLVIS_processFloWave2", (DL_FUNC) &_rLVIS_processFloWave2, 2},
+    {"_rLVIS_processFloWave2", (DL_FUNC) &_rLVIS_processFloWave2, 64},
     {NULL, NULL, 0}
 };
 
