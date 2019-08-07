@@ -1,0 +1,162 @@
+* using log directory 'C:/Users/caioh/lsrc/rLVIS/..Rcheck'
+* using R version 3.5.3 (2019-03-11)
+* using platform: x86_64-w64-mingw32 (64-bit)
+* using session charset: ISO8859-1
+* checking for file './DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'rLVIS' version '0.0.1'
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... WARNING
+Subdirectory 'rLVIS/src' contains apparent object files/libraries
+  RcppExports.o process.o rLVIS.dll
+Object files/libraries should not be included in a source package.
+
+In addition to the above warning(s), found the following notes:
+
+Found the following apparent object files/libraries:
+  src/cmpfit-1.2/mpfit.o src/gedisimulator/gediIO.o
+  src/gedisimulator/gediMetric.o src/gedisimulator/gediNoise.o
+  src/libclidar/gaussFit.o src/libclidar/libLasProcess.o
+  src/libclidar/libLasRead.o src/libclidar/libLidVoxel.o
+  src/libclidar/libLidarHDF.o src/libclidar/libOctree.o
+  src/libclidar/libTLSread.o src/libclidar/tiffWrite.o
+  windows/gdal2-2.2.3/lib/i386/libcfitsio.a
+  windows/gdal2-2.2.3/lib/i386/libcrypto.a
+  windows/gdal2-2.2.3/lib/i386/libcurl.a
+  windows/gdal2-2.2.3/lib/i386/libdf.a
+  windows/gdal2-2.2.3/lib/i386/libexpat.a
+  windows/gdal2-2.2.3/lib/i386/libfreexl.a
+  windows/gdal2-2.2.3/lib/i386/libgdal.a
+  windows/gdal2-2.2.3/lib/i386/libgeos.a
+  windows/gdal2-2.2.3/lib/i386/libgeos_c.a
+  windows/gdal2-2.2.3/lib/i386/libgeotiff.a
+  windows/gdal2-2.2.3/lib/i386/libgif.a
+  windows/gdal2-2.2.3/lib/i386/libhdf5.a
+  windows/gdal2-2.2.3/lib/i386/libhdf5_cpp.a
+  windows/gdal2-2.2.3/lib/i386/libhdf5_hl.a
+  windows/gdal2-2.2.3/lib/i386/libhdf5_hl_cpp.a
+  windows/gdal2-2.2.3/lib/i386/libintl.a
+  windows/gdal2-2.2.3/lib/i386/libjasper.a
+  windows/gdal2-2.2.3/lib/i386/libjpeg.a
+  windows/gdal2-2.2.3/lib/i386/libjson-c.a
+  windows/gdal2-2.2.3/lib/i386/libkea.a
+  windows/gdal2-2.2.3/lib/i386/liblzma.a
+  windows/gdal2-2.2.3/lib/i386/libmariadbclient.a
+  windows/gdal2-2.2.3/lib/i386/libmfhdf.a
+  windows/gdal2-2.2.3/lib/i386/libnetcdf.a
+  windows/gdal2-2.2.3/lib/i386/libopenjp2.a
+  windows/gdal2-2.2.3/lib/i386/libpng16.a
+  windows/gdal2-2.2.3/lib/i386/libpq.a
+  windows/gdal2-2.2.3/lib/i386/libproj.a
+  windows/gdal2-2.2.3/lib/i386/libspatialite.a
+  windows/gdal2-2.2.3/lib/i386/libsqlite3.a
+  windows/gdal2-2.2.3/lib/i386/libssh2.a
+  windows/gdal2-2.2.3/lib/i386/libssl.a
+  windows/gdal2-2.2.3/lib/i386/libszip.a
+  windows/gdal2-2.2.3/lib/i386/libtiff.a
+  windows/gdal2-2.2.3/lib/i386/libwebp.a
+  windows/gdal2-2.2.3/lib/i386/libxdr.a
+  windows/gdal2-2.2.3/lib/i386/libxml2.a
+  windows/gdal2-2.2.3/lib/x64/libcfitsio.a
+  windows/gdal2-2.2.3/lib/x64/libcrypto.a
+  windows/gdal2-2.2.3/lib/x64/libcurl.a
+  windows/gdal2-2.2.3/lib/x64/libdf.a
+  windows/gdal2-2.2.3/lib/x64/libexpat.a
+  windows/gdal2-2.2.3/lib/x64/libfreexl.a
+  windows/gdal2-2.2.3/lib/x64/libgdal.a
+  windows/gdal2-2.2.3/lib/x64/libgeos.a
+  windows/gdal2-2.2.3/lib/x64/libgeos_c.a
+  windows/gdal2-2.2.3/lib/x64/libgeotiff.a
+  windows/gdal2-2.2.3/lib/x64/libgif.a
+  windows/gdal2-2.2.3/lib/x64/libhdf5.a
+  windows/gdal2-2.2.3/lib/x64/libhdf5_cpp.a
+  windows/gdal2-2.2.3/lib/x64/libhdf5_hl.a
+  windows/gdal2-2.2.3/lib/x64/libhdf5_hl_cpp.a
+  windows/gdal2-2.2.3/lib/x64/libintl.a
+  windows/gdal2-2.2.3/lib/x64/libjasper.a
+  windows/gdal2-2.2.3/lib/x64/libjpeg.a
+  windows/gdal2-2.2.3/lib/x64/libjson-c.a
+  windows/gdal2-2.2.3/lib/x64/libkea.a
+  windows/gdal2-2.2.3/lib/x64/liblzma.a
+  windows/gdal2-2.2.3/lib/x64/libmariadbclient.a
+  windows/gdal2-2.2.3/lib/x64/libmfhdf.a
+  windows/gdal2-2.2.3/lib/x64/libnetcdf.a
+  windows/gdal2-2.2.3/lib/x64/libopenjp2.a
+  windows/gdal2-2.2.3/lib/x64/libpng16.a
+  windows/gdal2-2.2.3/lib/x64/libpq.a
+  windows/gdal2-2.2.3/lib/x64/libproj.a
+  windows/gdal2-2.2.3/lib/x64/libspatialite.a
+  windows/gdal2-2.2.3/lib/x64/libsqlite3.a
+  windows/gdal2-2.2.3/lib/x64/libssh2.a
+  windows/gdal2-2.2.3/lib/x64/libssl.a
+  windows/gdal2-2.2.3/lib/x64/libszip.a
+  windows/gdal2-2.2.3/lib/x64/libtiff.a
+  windows/gdal2-2.2.3/lib/x64/libwebp.a
+  windows/gdal2-2.2.3/lib/x64/libxdr.a
+  windows/gdal2-2.2.3/lib/x64/libxml2.a
+  windows/gsl-2.4/lib/i386/libgsl.a
+  windows/gsl-2.4/lib/i386/libgslcblas.a
+  windows/gsl-2.4/lib/x64/libgsl.a
+  windows/gsl-2.4/lib/x64/libgslcblas.a
+  windows/libtiff-4.0.9/lib/i386/libjpeg.a
+  windows/libtiff-4.0.9/lib/i386/liblzma.a
+  windows/libtiff-4.0.9/lib/i386/libtiff.a
+  windows/libtiff-4.0.9/lib/i386/libturbojpeg.a
+  windows/libtiff-4.0.9/lib/i386/libz.a
+  windows/libtiff-4.0.9/lib/x64/libjpeg.a
+  windows/libtiff-4.0.9/lib/x64/liblzma.a
+  windows/libtiff-4.0.9/lib/x64/libtiff.a
+  windows/libtiff-4.0.9/lib/x64/libturbojpeg.a
+  windows/libtiff-4.0.9/lib/x64/libz.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_cpp.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_f90cstub.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_fortran.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_hl.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_hl_cpp.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_hl_f90cstub.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_hl_fortran.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/i386/libhdf5_tools.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_cpp.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_f90cstub.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_fortran.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_hl.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_hl_cpp.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_hl_f90cstub.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_hl_fortran.a
+  windows/mingw64-libhdf5-dev-1.8.20/lib/x64/libhdf5_tools.a
+Object files/libraries should not be included in a source package.
+* checking if there is a namespace ... OK
+* checking for .dll and .exe files ... WARNING
+Found the following executable file:
+  src/rLVIS.dll
+Source packages should not contain undeclared executable files.
+See section 'Package structure' in the 'Writing R Extensions' manual.
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  .Rhistory
+  .gitignore
+  src/gedisimulator/.gitignore
+  src/libclidar/.hg_archival.txt
+  src/libclidar/.hgtags
+  src/tools/.hg_archival.txt
+  src/tools/.hgtags
+  windows/mingw64-libhdf5-dev-1.8.20/.gitignore
+  ..Rcheck
+  .Rproj.user
+  .git
+  .vscode
+These were most likely included in error. See section 'Package
+structure' in the 'Writing R Extensions' manual.
+* checking for portable file names ... WARNING
+Found the following file with a non-portable file name:
+  windows/libgeotiff-1.4.3/m4/lt~obsolete.m4
+These are not fully portable file names.
+See section 'Package structure' in the 'Writing R Extensions' manual.
+* checking whether package 'rLVIS' can be installed ... ERROR
+Installation failed.
+See 'C:/Users/caioh/lsrc/rLVIS/..Rcheck/00install.out' for details.
+* DONE
+Status: 1 ERROR, 3 WARNINGs, 1 NOTE

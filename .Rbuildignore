@@ -2,4 +2,12 @@
 ^\.Rproj\.user$
 ^readme$
 ^windows$
-^cmpfit$
+^src/cmpfit$
+^src/gedisimulator$
+^src/libclidar$
+^src/tools$
+^.*\.o$
+^.*\.obj$
+^.*\.dll$
+^.*\.so$
+^\.vscode$

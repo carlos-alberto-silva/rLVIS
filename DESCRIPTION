@@ -13,10 +13,12 @@ Imports:
   h5,
   lazyeval,
   MASS,
+  methods,
   raster,
   rasterVis,
   Rcpp,
   rgdal,
+  rgeos,
   rgl,
   sp,
   viridis

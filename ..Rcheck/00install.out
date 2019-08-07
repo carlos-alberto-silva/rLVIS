@@ -1,0 +1,6 @@
+* installing *source* package 'rLVIS' ...
+** libs
+Warning in system(cmd) : 'make' not found
+ERROR: compilation failed for package 'rLVIS'
+* removing 'C:/Users/caioh/lsrc/rLVIS/..Rcheck/rLVIS'
+In R CMD INSTALL

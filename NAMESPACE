@@ -2,6 +2,8 @@
 
 export(GridMetrics)
 export(L2Stats)
+export(clipLevel1)
+export(clipLevel1Geometry)
 export(clipLevel2)
 export(plotLevel2)
 export(plotStats)
