@@ -12,8 +12,10 @@
 #'
 #'#' LVIS level 2 file path
 #'level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
-#'unzip(level2_filepath_zip, exdir = tempdir())
-#'level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
+#'tempDir = tempdir()
+#'
+#'unzip(level2_filepath_zip, exdir = tempDir)
+#'level2_filepath <- file.path(tempDir, "LVIS_Mondah_level2.txt")
 #'
 #'#' Polgons file path
 #'polygons_filepath <- system.file("extdata", "LVIS_Mondah_polygons.shp", package="rLVIS")
