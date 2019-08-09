@@ -15,7 +15,7 @@
 #'@examples
 #'
 #'#' LVIS level 2 file path
-#'level1_filepath = system.file("extdata", "LVIS_Mondah_level1b.SPLIT.8.h5", package="rLVIS")
+#'level1_filepath = system.file("extdata", "lvis_level1_clip.h5", package="rLVIS")
 #'
 #'# Rectangle
 #'xleft = 9.35986
@@ -69,13 +69,13 @@ clipLevel1 = function(level1_waveform, output, xleft, xright, ybottom, ytop){
 #'@examples
 #'
 #'#' LVIS level 2 file path
-#'level1_filepath = system.file("extdata", "LVIS_Mondah_level1b.SPLIT.8.h5", package="rLVIS")
+#'level1_filepath = system.file("extdata", "lvis_level1_clip.h5", package="rLVIS")
 #'
 #'#' Reading LVIS level 2 file
 #'level1_waveform = readLevel1b(level1_filepath)
 #'
 #'# Polgons file path
-#'polygons_filepath <- system.file("extdata", "lvis_level1_polygons.shp", package="rLVIS")
+#'polygons_filepath <- system.file("extdata", "LVIS_Mondah_clip_polygon.shp", package="rLVIS")
 #'
 #'# Reading LVIS level 2 file
 #'polygon_spdf<-raster::shapefile(polygons_filepath)

@@ -26,24 +26,20 @@ This function plots LVIS level1b and level 2 data
 \examples{
 
 # LVIS level1b file path
-level1b_filepath_zip <- system.file("extdata", "LVIS_Mondah_level1b.zip", package="rLVIS")
-unzip(level1b_filepath_zip, exdir = tempdir())
-level1b_filepath <- file.path(tempdir(), "LVIS_Mondah_level1b.h5")
+level1b_filepath <- system.file("extdata", "lvis_level1_clipped.h5", package="rLVIS")
 
 # Reading LVIS level1b file
 level1b<-readLevel1b(level1bpath=level1b_filepath)
 
 # LVIS level2 file path
-level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
-unzip(level2_filepath_zip, exdir = tempdir())
-level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
+level2_filepath <- system.file("extdata", "lvis_level2_clip.txt", package="rLVIS")
 
 # Reading LVIS level1b file
 level2_spdf<-readLevel2(level2path=level2_filepath, spdf=TRUE, glatlon=TRUE)
 
 #'Plotting LVIS waveforms
 plotWaveform(level1b=level1b,level2=level2_spdf,
-             shotnum=10964985,plot2=TRUE,xlab="Relative amplitude (\%)", ylab="Height (m)")
+             shotnum=9427774,plot2=TRUE,xlab="Relative amplitude (\%)", ylab="Height (m)")
 
 }
 \author{

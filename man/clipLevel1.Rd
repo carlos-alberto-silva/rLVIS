@@ -28,7 +28,7 @@ Clip LVIS Level1 data within a given bounding coordinates
 \examples{
 
 #' LVIS level 2 file path
-level1_filepath = system.file("extdata", "LVIS_Mondah_level1b.SPLIT.8.h5", package="rLVIS")
+level1_filepath = system.file("extdata", "lvis_level1_clip.h5", package="rLVIS")
 
 # Rectangle
 xleft = 9.35986
