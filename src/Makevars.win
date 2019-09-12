@@ -5,7 +5,7 @@ LIBCLIDAR_ROOT = libclidar
 CMPFIT_ROOT = cmpfit-1.2
 GSL_ROOT = gsl
 
-PKG_CFLAGS += -D_USE_MATH_DEFINES=1 -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DDLL_EXPORTS
+PKG_CFLAGS += -DDLLEXPORT -D_USE_MATH_DEFINES -D_WIN32 -DWIN32 -DH5_BUILT_AS_DYNAMIC_LIB -DDLL_EXPORTS
 ARCH=$(PROCESSOR_ARCHITECTURE)
 
 HDF5_LIB = ../windows/include/
@@ -26,8 +26,10 @@ src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
 	$(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c \
 	$(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c \
-	$(GEDIRAT_ROOT)/gediMetric.o
+	$(GEDIRAT_ROOT)/gediMetric.o $(GEDIRAT_ROOT)/gediRat.o \
+	$(HANCOCKTOOLS_ROOT)/tools.c
 src += $(CMPFIT_ROOT)/mpfit.c
+src += msgHandling.c
 OBJECTS = $(src:.c=.o)
 
 src_cpp = $(wildcard *.cpp)

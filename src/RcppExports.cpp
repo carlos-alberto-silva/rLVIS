@@ -79,9 +79,60 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gediRat
+void gediRat(CharacterVector input, CharacterVector output, bool inList, bool ground, bool hdf, CharacterVector waveID, NumericVector coords, CharacterVector listCoord, NumericVector gridBound, float gridStep, float pSigma, float pFWHM, CharacterVector readPulse, float fSigma, CharacterVector wavefront, float res, bool LVIS, bool topHat, bool sideLobe, float lobeAng, bool checkCover, float maxScanAng, float decimate, uint64_t pBuff, int maxBins, bool countOnly, bool pulseAfter, bool pulseBefore, bool noNorm, bool noOctree, int octLevels, int nOctPix, bool decon, bool indDecon, bool readWave, bool listFiles, bool keepOld, bool useShadow, bool polyGround, bool nnGround, NumericVector seed);
+RcppExport SEXP _rLVIS_gediRat(SEXP inputSEXP, SEXP outputSEXP, SEXP inListSEXP, SEXP groundSEXP, SEXP hdfSEXP, SEXP waveIDSEXP, SEXP coordsSEXP, SEXP listCoordSEXP, SEXP gridBoundSEXP, SEXP gridStepSEXP, SEXP pSigmaSEXP, SEXP pFWHMSEXP, SEXP readPulseSEXP, SEXP fSigmaSEXP, SEXP wavefrontSEXP, SEXP resSEXP, SEXP LVISSEXP, SEXP topHatSEXP, SEXP sideLobeSEXP, SEXP lobeAngSEXP, SEXP checkCoverSEXP, SEXP maxScanAngSEXP, SEXP decimateSEXP, SEXP pBuffSEXP, SEXP maxBinsSEXP, SEXP countOnlySEXP, SEXP pulseAfterSEXP, SEXP pulseBeforeSEXP, SEXP noNormSEXP, SEXP noOctreeSEXP, SEXP octLevelsSEXP, SEXP nOctPixSEXP, SEXP deconSEXP, SEXP indDeconSEXP, SEXP readWaveSEXP, SEXP listFilesSEXP, SEXP keepOldSEXP, SEXP useShadowSEXP, SEXP polyGroundSEXP, SEXP nnGroundSEXP, SEXP seedSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type output(outputSEXP);
+    Rcpp::traits::input_parameter< bool >::type inList(inListSEXP);
+    Rcpp::traits::input_parameter< bool >::type ground(groundSEXP);
+    Rcpp::traits::input_parameter< bool >::type hdf(hdfSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type waveID(waveIDSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type coords(coordsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type listCoord(listCoordSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type gridBound(gridBoundSEXP);
+    Rcpp::traits::input_parameter< float >::type gridStep(gridStepSEXP);
+    Rcpp::traits::input_parameter< float >::type pSigma(pSigmaSEXP);
+    Rcpp::traits::input_parameter< float >::type pFWHM(pFWHMSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type readPulse(readPulseSEXP);
+    Rcpp::traits::input_parameter< float >::type fSigma(fSigmaSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type wavefront(wavefrontSEXP);
+    Rcpp::traits::input_parameter< float >::type res(resSEXP);
+    Rcpp::traits::input_parameter< bool >::type LVIS(LVISSEXP);
+    Rcpp::traits::input_parameter< bool >::type topHat(topHatSEXP);
+    Rcpp::traits::input_parameter< bool >::type sideLobe(sideLobeSEXP);
+    Rcpp::traits::input_parameter< float >::type lobeAng(lobeAngSEXP);
+    Rcpp::traits::input_parameter< bool >::type checkCover(checkCoverSEXP);
+    Rcpp::traits::input_parameter< float >::type maxScanAng(maxScanAngSEXP);
+    Rcpp::traits::input_parameter< float >::type decimate(decimateSEXP);
+    Rcpp::traits::input_parameter< uint64_t >::type pBuff(pBuffSEXP);
+    Rcpp::traits::input_parameter< int >::type maxBins(maxBinsSEXP);
+    Rcpp::traits::input_parameter< bool >::type countOnly(countOnlySEXP);
+    Rcpp::traits::input_parameter< bool >::type pulseAfter(pulseAfterSEXP);
+    Rcpp::traits::input_parameter< bool >::type pulseBefore(pulseBeforeSEXP);
+    Rcpp::traits::input_parameter< bool >::type noNorm(noNormSEXP);
+    Rcpp::traits::input_parameter< bool >::type noOctree(noOctreeSEXP);
+    Rcpp::traits::input_parameter< int >::type octLevels(octLevelsSEXP);
+    Rcpp::traits::input_parameter< int >::type nOctPix(nOctPixSEXP);
+    Rcpp::traits::input_parameter< bool >::type decon(deconSEXP);
+    Rcpp::traits::input_parameter< bool >::type indDecon(indDeconSEXP);
+    Rcpp::traits::input_parameter< bool >::type readWave(readWaveSEXP);
+    Rcpp::traits::input_parameter< bool >::type listFiles(listFilesSEXP);
+    Rcpp::traits::input_parameter< bool >::type keepOld(keepOldSEXP);
+    Rcpp::traits::input_parameter< bool >::type useShadow(useShadowSEXP);
+    Rcpp::traits::input_parameter< bool >::type polyGround(polyGroundSEXP);
+    Rcpp::traits::input_parameter< bool >::type nnGround(nnGroundSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type seed(seedSEXP);
+    gediRat(input, output, inList, ground, hdf, waveID, coords, listCoord, gridBound, gridStep, pSigma, pFWHM, readPulse, fSigma, wavefront, res, LVIS, topHat, sideLobe, lobeAng, checkCover, maxScanAng, decimate, pBuff, maxBins, countOnly, pulseAfter, pulseBefore, noNorm, noOctree, octLevels, nOctPix, decon, indDecon, readWave, listFiles, keepOld, useShadow, polyGround, nnGround, seed);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rLVIS_processFloWave2", (DL_FUNC) &_rLVIS_processFloWave2, 64},
+    {"_rLVIS_gediRat", (DL_FUNC) &_rLVIS_gediRat, 41},
     {NULL, NULL, 0}
 };
 

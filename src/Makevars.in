@@ -8,6 +8,7 @@ CMPFIT_ROOT = cmpfit-1.2
 PKG_CFLAGS=@HDF5_CFLAGS@ \
 					 @GSL_CFLAGS@ \
 					 @GDAL_CFLAGS@ \
+					 -DDLLEXPORT \
 					 -I$(GEDIRAT_ROOT) -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
 					 -I${LIBCLIDAR_ROOT} -I. -I/usr/include/geotiff \
 					 -I./cmpfit-1.2 -I/usr/include/libgeotiff
@@ -26,8 +27,9 @@ src = $(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
 	$(LIBCLIDAR_ROOT)/libLidVoxel.c  $(LIBCLIDAR_ROOT)/libTLSread.c \
 	$(LIBCLIDAR_ROOT)/libLidarHDF.c $(GEDIRAT_ROOT)/gediIO.c \
 	$(LIBCLIDAR_ROOT)/libOctree.c $(GEDIRAT_ROOT)/gediNoise.c \
-	$(GEDIRAT_ROOT)/gediMetric.c \
-	$(CMPFIT_ROOT)/mpfit.c
+	$(GEDIRAT_ROOT)/gediMetric.c $(GEDIRAT_ROOT)/gediRat.c \
+	$(CMPFIT_ROOT)/mpfit.c \
+	msgHandling.c
 src_cpp = process.cpp RcppExports.cpp
 OBJECTS = $(src:.c=.o) \
 				  $(src_cpp:.cpp=.o)

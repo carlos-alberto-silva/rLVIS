@@ -25,7 +25,7 @@ extern "C" {
 }
 
 
-#include <process.hpp>
+#include <gediMetric.hpp>
 
   /*##############################*/
   /*# Generates metrics from     #*/
@@ -64,8 +64,8 @@ using namespace Rcpp;
 float rhoG;
 float rhoC;
 
-control* makeControl(
-  const char*   input,
+control* metric_makeControl(
+  const char*     input,
   bool            writeFit        = false,
   bool            writeGauss      = false,
   bool            readBinLVIS     = false,
@@ -502,7 +502,7 @@ Rcpp::DataFrame processFloWave2(
   float *processed=NULL,*denoised=NULL;;
 
   /*read command Line*/
-    dimage=makeControl(
+    dimage=metric_makeControl(
       input_str.c_str(),
       writeFit,
       writeGauss,

@@ -23,7 +23,9 @@ each grid cell
 \examples{
 \dontrun{
 #' LVIS level 2 file path
-level2_filepath <- system.file("extdata", "lvis_level2_clip.txt", package="rLVIS")
+level2_filepath_zip <- system.file("extdata", "LVIS_Mondah_level2.zip", package="rLVIS")
+unzip(level2_filepath_zip, exdir = tempdir())
+level2_filepath <- file.path(tempdir(), "LVIS_Mondah_level2.txt")
 
 #' Reading LVIS level 2 file
 level2_spdf<-readLevel2(level2path=level2_filepath,spdf=TRUE,glatlon=TRUE)
