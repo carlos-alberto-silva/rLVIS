@@ -64,6 +64,13 @@
 #' @param gold deconvolve with Gold's method
 #' @param deconTol deconvolution tolerance
 #'
+#' @examples
+#'# LVIS level1b file path
+#'level1b_filepath <- system.file("extdata", "lvis_level1_clip.h5", package="rLVIS")
+#'
+#'
+#' result = processMetricsHDFlvis(level1b_filepath)
+#'
 # @useDynLib rLVIS
 #' @import Rcpp methods
 #' @export
@@ -73,8 +80,8 @@ processMetricsHDFlvis = function(input, level2 = character(0), bounds = numeric(
 
 
   if (h5::is.h5file(input)) {
-    file = h5::h5file(input, mode="r")
-    datasets = h5::list.datasets(file)
+    h5.file = h5::h5file(input, mode="r")
+    datasets = h5::list.datasets(h5.file)
     expected = c(
       "/LON0",
       "/LAT0",
@@ -92,6 +99,7 @@ processMetricsHDFlvis = function(input, level2 = character(0), bounds = numeric(
     for (field in expected) {
       stopifnot(field %in% datasets)
     }
+    h5::h5close(h5.file)
   } else {
     stop("input file does not seems to be valid HDF5 LVIS file")
   }

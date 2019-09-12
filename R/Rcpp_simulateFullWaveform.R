@@ -111,5 +111,4 @@ simulateFullWaveform = function(input, output, coords, inList = FALSE, ground = 
   library.dynam.unload("rLVIS", libpath=system.file(package="rLVIS"))
 
   message(paste0("Successfully written to ", output))
-  return (h5file(output, mode = "r"))
 }
