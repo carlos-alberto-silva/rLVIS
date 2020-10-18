@@ -7,14 +7,13 @@
 ![R_Forge](https://img.shields.io/badge/R_Forge-0.0.2-green.svg) 
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/rLVIS)
 
-rLVIS: An R Package for NASA's Land, Vegetation, and Ice Sensor (LVIS) data processing and visualization
+**rLVIS: An R Package for NASA's Land, Vegetation, and Ice Sensor (LVIS) data processing and visualization.**
 
-Set of tools for reading, processing and visualizing 
-            LVIS (Land, Vegetation, and Ice Sensor) Level1b and Level2 data
-            for forest inventory applications.
-            
-The rLVIS package provides functions to i) import Level1b and Level2 data, ii) visualing LVIS waveform, iii)
-detect ground elevation from the waveform; iv) compute canopy metricfrom the LVIS waveform; v)  clip Level2 data within field plots; vi) to compute a series of statistics from Level2 at plot or as raster layers for the entire landscapy, vii) compare predicted version oberved forest attributes.
+Authors: Carlos Alberto Silva, Caio Hamamura and Carine Klauberg  
+
+The rLVIS package provides functions for i) importing, ii) visualizing, iii) clipping, iv) gridding LVIS data.
+
+# Getting Started
 
 ## Installation
 ```r
@@ -25,8 +24,6 @@ devtools::install_github("carlos-alberto-silva/rLVIS")
 #The CRAN version:
 install.packages("rLVIS")
 ```    
-
-## Getting Started
 ```r   
 # Import labraries
 library(rLIVS)
@@ -132,8 +129,8 @@ head(RH100metrics)
     ##   3 2.47 57.26 37.95028 12.054305
     ##   2 6.92 59.78 37.23889  5.176369
 ```
-#' Canopy and ground metrics within as raster layers
 
+#'Gridding canopy and ground metrics as raster layers
 ```r
 #' Computing serie of LVIS metrics
 mlvis<-GridMetrics(level2_spdf=level2_spdf,func=~mySetOfMetrics(RH100), res=0.0005)
@@ -168,7 +165,6 @@ aspect3d(1,1,0.1)
 
 
 #' Scatterplot of a 1:1 comparison
-
 ```r
 #Importing libraries
 library(raster)
@@ -242,3 +238,23 @@ agb.comp<-plotStats(y=getValues(r1),
 grid.arrange(agb.maps,agb.comp$plotg, nrow = 1)
 ```
 ![](https://github.com/carlos-alberto-silva/rLVIS/blob/master/readme/Fig_9.png)
+
+# References
+Silva, C. A.; Saatchi, S.; Alonso, M. G. ; Labriere, N. ; Klauberg, C. ; Ferraz, A. ; Meyer, V. ;        Jeffery, K. J. ; Abernethy, K. ; White, L. ; Zhao, K. ; Lewis, S. L. ; Hudak, A. T. (2018)         Comparison of Small- and Large-Footprint Lidar Characterization of Tropical Forest                 Aboveground Structure and Biomass: A Case Study from Central Gabon. IEEE Journal of Selected       Topics in Applied Earth Observations and Remote Sensing, p. 1-15.
+      https://ieeexplore.ieee.org/document/8331845
+
+LVIS webpage. Accessed on February 15 2018 https://lvis.gsfc.nasa.gov/Home/index.html
+
+# Acknowledgements
+The NASA's Goddard Space Flight Center for developing LVIS.
+
+# Reporting Issues 
+Please report any issue reagardling the rLVIS package to Carlos Silva (carlos_engflorestal@outlook.com).
+
+# Citing rGEDI
+Silva,C.A; Hamamura,C.;Klauberg, C. rLVIS: NASA's Land, Vegetation, and Ice Sensor (LVIS) Data Visualization and Processing.
+version 0.0.1, accessed on Oct. 1 2019, available at: <>
+
+# Disclaimer
+**rLVIS package has not been developted by the LVIS team. It comes with no guarantee, expressed or implied, and the authors hold no responsibility for its use or reliability of its outputs.**
+
