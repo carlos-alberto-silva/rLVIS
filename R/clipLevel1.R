@@ -2,7 +2,6 @@
 #'
 #'@description Clip LVIS Level1 data within a given bounding coordinates
 #'
-#'
 #'@param level1_waveform h5file; S4 object of class H5File
 #'@param output path where to save the new h5file
 #'@param xleft numeric. left x coordinates of rectangles.
@@ -11,7 +10,6 @@
 #'@param ytop numeric. top y coordinates of rectangles.
 #'
 #'@return Returns An object of class H5File; subset of LVIS Level1 data
-#'@author Caio Hamamura
 #'@examples
 #'
 #'#' LVIS level 2 file path
@@ -31,7 +29,6 @@
 #'clipped_waveform = clipLevel1(level1_waveform, output, xleft, xright, ybottom, ytop)
 #'
 #'@export
-#'
 clipLevel1 = function(level1_waveform, output, xleft, xright, ybottom, ytop){
 
   spData = getSpatialData(level1_waveform)
@@ -59,13 +56,11 @@ clipLevel1 = function(level1_waveform, output, xleft, xright, ybottom, ytop){
 #'
 #'@description Clip LVIS Level1 data within a given bounding coordinates
 #'
-#'
 #'@param level1_waveform h5file; S4 object of class H5File
 #'@param output path where to save the new h5file
 #'@param polygon_spdf SpatialDataFrame. A polygon dataset for clipping the waveform
 #'
 #'@return Returns An object of class H5File; subset of LVIS Level1 data
-#'@author Caio Hamamura
 #'@examples
 #'
 #'#' LVIS level 2 file path
